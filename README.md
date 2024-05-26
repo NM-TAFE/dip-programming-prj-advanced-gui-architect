@@ -76,26 +76,24 @@ in the [Wiki](https://github.com/NM-TAFE/project-advanced-ui-development-team-me
    new directory. The uninstaller removes the whole installation directory. If you installed Tesseract in an existing 
    directory, that directory will be removed with all its subdirectories and files.
 
-   See: [AppSettings] in config.ini
+   See: [AppSettings] in app/config.ini
 
 ## Configuration / Initial SetUp
 
 1. The project requires a personal ChatGPT API Key. 
 
    OpenAI API: https://openai.com/index/openai-api/
-
-   See: [AppSettings] in config.ini
+   See: [AppSettings] in app/config.ini
 
 2. The project requires the path to your IDE executable:
+   See: [AppSettings] in app/config.ini
 
-   See: [AppSettings] in config.ini
 
-
-## Running the Project:
+## Running the Project
 
 1. Once the Installation and Configuration/SetUp steps have been completed; navigate and run:
    ```bash
-   app.py
+   app/app.py
    ```
 
 2. Once running, the terminal will display the localhost link for the project in the console.
