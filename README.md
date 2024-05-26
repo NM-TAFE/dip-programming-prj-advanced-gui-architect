@@ -83,9 +83,11 @@ in the [Wiki](https://github.com/NM-TAFE/project-advanced-ui-development-team-me
 1. The project requires a personal ChatGPT API Key. 
 
    OpenAI API: https://openai.com/index/openai-api/ 
-   Refer to:[AppSettings] in app/config.ini
+   
+   Refer to: [AppSettings] in app/config.ini
 
 2. The project requires the path to your IDE executable: 
+   
    Refer to: [AppSettings] in app/config.ini
 
 
