@@ -23,7 +23,7 @@
 A video player designed to assist visually impaired developers who want to learn to code.
 The program reads code from videos to assist visually impaired developers in using these resources.
 
-## Features - (need more info)
+## Features - (need more info) TODO
 
 ---
 
@@ -43,30 +43,62 @@ in the [Wiki](https://github.com/NM-TAFE/project-advanced-ui-development-team-me
 
 2. Create a virtual environment
 
-```bash
-python -m venv ./venv
-```
+   ```bash
+   python -m venv ./venv
+   ```
 
 3. Activate the virtual environment
    Windows:
 
-```bash
-./venv/Scripts/activate
-```
+   ```bash
+   ./venv/Scripts/activate
+   ```
 
-Mac/Linux
+   Mac/Linux
 
-```bash
-source venv/bin/activate
-```
+   ```bash
+   source venv/bin/activate
+   ```
 
 4. Install dependencies with pip
 
-```bash
-pip install -r requirements.txt
-```
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-5. ...rest of installation steps here
+5. This project requires the Tesseract OCR Library (note: may require an installer).
+
+   Tesseract OCR Documentation: https://tesseract-ocr.github.io/tessdoc/Installation.html
+   
+   Windows Installer: https://github.com/UB-Mannheim/tesseract/wiki
+   
+   WARNING: Tesseract should be either installed in the directory which is suggested during the installation or in a 
+   new directory. The uninstaller removes the whole installation directory. If you installed Tesseract in an existing 
+   directory, that directory will be removed with all its subdirectories and files.
+
+   See: [AppSettings] in config.ini
+
+## Configuration / Initial SetUp
+
+1. The project requires a personal ChatGPT API Key. 
+
+   OpenAI API: https://openai.com/index/openai-api/
+
+   See: [AppSettings] in config.ini
+
+2. The project requires the path to your IDE executable:
+
+   See: [AppSettings] in config.ini
+
+
+## Running the Project:
+
+1. Once the Installation and Configuration/SetUp steps have been completed; navigate and run:
+   ```bash
+   app.py
+   ```
+
+2. Once running, the terminal will display the localhost link for the project in the console.
 
 ## Contributing
 
