@@ -1,6 +1,9 @@
 # Code of Conduct
 
-## v1 - Drafted by Izaac Saleh & Sukhwan Ko
+## Versions
+
+- v2 - Drafted by Sukhwan Ko
+- <s>v1 - Drafted by Izaac Saleh & Sukhwan Ko</s>
 
 ## Our Pledge
 
@@ -55,16 +58,23 @@ any moderations they deem appropriate.
 
 ---
 
-- Our online platform (website, forum, chatroom etc.)
-- Code repository (including comments, pull requests, issue reports etc.)
-- Project-related communication channels such as:
-  - Email
-  - Slack
-  - Microsoft Teams
-  - Discord
-  - Asana
-  - etc.
-- In-person events(Conferences, meetups etc.)
+**Our online platform**
+
+- **Website**: The Code of Conduct applies to all comments, posts, and messages left on the website, including those in forums, discussion boards, or comment sections.
+- **Forum**: The same rules apply to all discussions, threads, and topics within the forum, including those that are public or private.
+- **Chatroom**: The Code of Conduct covers all conversations, messages, and files shared in chatroom, whether they're public or invited-only.
+
+**Code repository**
+
+- **Comments**: The Code applies to all comments left on code snippets, commits, or pull requests, as well as any replies or discussions that might arise.
+- **Pull requests:** The same rules apply to all pull requests, including those for new features, bug fixes, or refactoring code.
+- **Issue reports**: The Code of conduct covers all issue reports, whether they're related to bugs, feature requests, or documentation updates.
+
+**Project-related communication channels**
+
+- **Email**: The Code applies to all emails sent to the project's email list, including these that are public or private.
+- **Microsoft Teams:** The Code of Conduct covers all discussions, meetings, and file shared within the project's Microsoft Teams space.
+- **Discord(main):** The same rules apply to all voice or text chats, channels, and servers used by the project on Discord.
 
 ## Enforcement
 
