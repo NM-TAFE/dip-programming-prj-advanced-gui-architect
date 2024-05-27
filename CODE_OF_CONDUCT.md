@@ -80,7 +80,7 @@ any moderations they deem appropriate.
 
 ---
 
-Community leaders will take action to address violations of the Code of Conduct. The specific consequences will depend on the severity of the violation.
+Our Community Leaders are responsible for clarifying and enforcing the standards of acceptable behaviour and are expected to lead by example. If a breach of the Code of Conduct is found to have occurred, Community Leaders are charged with taking appropriate but fair corrective action. Community Leaders have the responsibility, and maintain the right, to remove, edit, or reject comments, commits, code, issues, and other contributions that are not in alignment with this Code of Conduct. They will communicate the reasons for any moderation they deem appropriate.
 
 ## Enforcement Guidelines
 
