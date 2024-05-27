@@ -110,6 +110,32 @@ Our Community Leaders are responsible for clarifying and enforcing the standards
 
 - **Consequence:** A permanent ban from any sort of public interaction within the community.
 
+5. Additional Guidelines
+
+- Initial Response: Upon receiving a report of potential Code of Conduct violation, our Community Leaders will acknowledge receipt and promptly investigate.
+  - Investigation Process:
+    - Gather information from all parties involved.
+    - Review relevant records and communications.
+    - Investigate in a fair and impartial manner.
+  - Communication During Investigation:
+    - Maintain open communication with all parties involved.
+    - Provide updates on the progress and outcome of the investigation.
+  - Decision-Making:
+    - Community Leaders will make decisions based on the findings and evidence gathered during the investigation.
+  - Consequences for Repeat Offenders:
+    - For repeat offenders, consequences may be escalated or combined (e.g., temporary ban and loss of privileges).
+  - Appeals Process:
+    - Establish a clear appeals process for individuals affected by enforcement decisions.
+    - Ensure that appeals are heard in a fair and impartial manner.
+
+6. Resolving Disputes
+
+- Dispute Resolution Committee: Establish a committee composed of community leaders to resolve disputes related to Code of Conduct violations.
+- Dispute Resolution Process:
+  - Identify the nature of the dispute.
+  - Gather information from all parties involved.
+  - Make a fair and impartial decision.
+
 ## Attribution
 
 This Code of Conduct is adapted from the GITHUB documents template for "code of conduct" found when adding a file of the
