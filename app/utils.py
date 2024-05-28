@@ -1,3 +1,5 @@
+import sys, os.path
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 import hashlib
 import json
 import os.path
@@ -27,9 +29,9 @@ def config(section: str = None, option: str = None) -> Union[ConfigParser, str]:
     if (section is None) != (option is None):
         raise SyntaxError("section AND option parameters OR no parameters must be passed to function config()")
     parser = ConfigParser()
-    if not os.path.exists("config.ini"):
-        shutil.copy("config.example.ini", "config.ini")
-    parser.read("config.ini")
+    if not os.path.exists("app/config.ini"):
+        shutil.copy("app/config.example.ini", "app/config.ini")
+    parser.read("app/config.ini")
     if parser.get("AppSettings", "openai_api_key") != "your_openai_api_key_here":
         openai.api_key = parser.get("AppSettings", "openai_api_key")
         # TODO: This only needs to be set once, unsure if calling this will cause any performance issues same for
