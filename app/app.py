@@ -175,7 +175,8 @@ def upload_video():
     youtube_url = request.form.get("youtubeInput")
     file = request.files["localFileInput"]
     if youtube_url:
-        return redirect(url_for("auditory_feedback", next_page="/"))
+        next_page = utils.download_youtube_video(youtube_url)
+        return redirect(url_for("auditory_feedback",  next_page=next_page))
 
     if file:
         if not os.path.exists(f"{utils.get_vid_save_path()}"):
