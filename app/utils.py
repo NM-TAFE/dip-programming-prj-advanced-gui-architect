@@ -532,3 +532,8 @@ def extract_form_values(request):
             'use_youtube_downloader': youtube_downloader_enabled,
         }
     }
+
+def update_port() -> bool :
+    if sys.platform.lower() in ['darwin', 'linux']: 
+        return True
+    return False

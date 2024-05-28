@@ -277,8 +277,10 @@ def update_tesseract_path():
 if __name__ == "__main__":
     host = "localhost"
     port = 5000
-    if sys.platform.lower() in ['darwin', 'linux']: 
-        port = 5002
+    if utils.update_port() == True: 
+        port = 5002 
+    else: 
+        port = port
     logging.basicConfig(filename="app.log", filemode="w", level=logging.DEBUG, format="%(levelname)s - %(message)s")
     print("[*] Starting OcrRoo Server")
     print(f"[*] OcrRoo Server running on http://{host}:{port}/")
