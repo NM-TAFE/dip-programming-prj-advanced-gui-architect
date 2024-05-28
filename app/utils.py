@@ -467,7 +467,7 @@ def update_configuration(new_values_dict) -> None:
                 value = str(value)
             config_file.set(section, key, value)
     # save the file
-    with open('config.ini', 'w') as config_file_save:
+    with open('app/config.ini', 'w') as config_file_save:
         config_file.write(config_file_save)
 
 
