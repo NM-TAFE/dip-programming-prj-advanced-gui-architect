@@ -33,7 +33,9 @@ def config(section: str = None, option: str = None) -> Union[ConfigParser, str]:
         raise SyntaxError("section AND option parameters OR no parameters must be passed to function config()")
     parser = ConfigParser()
     if not (APP_DIR / 'config.ini').exists():
-        shutil.copy(APP_DIR / 'config.example.ini', APP_DIR / 'config.ini')
+        src_path = str(APP_DIR / 'config.example.ini')
+        dst_path = str(APP_DIR / 'config.ini')
+        shutil.copy(src_path, dst_path)
     parser.read("config.ini")
     if parser.get("AppSettings", "openai_api_key") != "your_openai_api_key_here":
         openai.api_key = parser.get("AppSettings", "openai_api_key")
@@ -54,7 +56,6 @@ def hash_video_file(filename: str) -> str:
     :return: Returns hex based md5 hash
     """
     hash_md5 = hashlib.md5()
-    # with open(f"{get_vid_save_path()}{filename}", "rb") as f:
     video_file_path = Path(get_vid_save_path(), f'{filename}').resolve()
     with video_file_path.open('rb') as f:
         for chunk in iter(lambda: f.read(4096), b""):
@@ -106,6 +107,17 @@ def read_user_data() -> Union[Any, None]:
         return None
 
 
+def directory_append_slash(directory: str) -> str:
+    # Check if directory already have slash
+    if directory.endswith(('/', '\\')):
+        return directory
+    
+    # Append slash
+    directory += '\\' if  os.name == 'nt' else '/'
+    
+    return directory
+
+
 def get_vid_save_path() -> str:
     """
     Returns output path from config variables, will set default to root of project\\out\\videos\\
@@ -118,12 +130,13 @@ def get_vid_save_path() -> str:
         default_path = PROJ_ROOT / 'out' / 'videos'
         if not default_path.exists():
             default_path.mkdir(parents=True, exist_ok=True)
+        
+        default_path = str(default_path)
         return default_path
 
-    # if not vid_download_path.endswith(('/', '\\')):
-    #     vid_download_path += '\\' if  os.name == 'nt' else '/'
+    vid_download_path = str(Path(vid_download_path))
     
-    return str(Path(vid_download_path).resolve())
+    return directory_append_slash(vid_download_path)
 
 
 def get_output_path() -> str:
@@ -138,12 +151,13 @@ def get_output_path() -> str:
         default_path = PROJ_ROOT / 'out'
         if not default_path.exists():
             default_path.mkdir(parents=True, exist_ok=True)
-        return default_path
+        
+        default_path = str(default_path)
+        
+        return directory_append_slash(default_path)
     
-    # if not output_path.endswith(('/', '\\')):
-    #     output_path += '\\' if  os.name == 'nt' else '/'
-    
-    return str(Path(output_path).resolve())
+    output_path = str(Path(output_path))
+    return directory_append_slash(output_path)
 
 
 def send_code_snippet_to_ide(filename: str, code_snippet: str) -> bool:
@@ -292,7 +306,6 @@ def add_video_to_user_data(filename: str, video_title: str, video_hash: str, you
     if user_data is None:
         return
     
-    # video_capture = cv2.VideoCapture(f'{get_vid_save_path()}{filename}')
     video_path = str(Path(get_vid_save_path(), f'{filename}').resolve())
     video_capture = cv2.VideoCapture(video_path)
     if not video_capture.isOpened():

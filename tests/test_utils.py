@@ -117,9 +117,11 @@ def test_hash_string():
 
 
 def test_get_output_path(mocker):
+    project_root = str(utils.PROJ_ROOT)
+    default_path = utils.directory_append_slash(os.path.join(project_root, 'out'))
     test_output_paths = {
-        "c:\\users\\program files\\app": "c:\\users\\program files\\app\\",
-        "output_path": os.path.dirname(os.getcwd()) + "\\out\\",
+        "C:\\Users\\program files\\app": "C:\\Users\\program files\\app\\",
+        "output_path": default_path,
         "videos\\my_videos\\": "videos\\my_videos\\",
     }
     for paths in test_output_paths:
