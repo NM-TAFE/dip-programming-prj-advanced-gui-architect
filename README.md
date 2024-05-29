@@ -12,9 +12,15 @@
 
 **AI Powered OCR Code Recognition from Video Tutorials**
 
+<<<<<<< HEAD
 [![Build](https://github.com/NM-TAFE/project-advanced-ui-development-team-mental-capacity/actions/workflows/build.yml/badge.svg)](https://github.com/NM-TAFE/dip-programming-prj-advanced-gui-architect/actions/workflows/build.yml)
 [![Tests](https://github.com/NM-TAFE/project-advanced-ui-development-team-mental-capacity/actions/workflows/tests.yml/badge.svg)](https://github.com/NM-TAFE/dip-programming-prj-advanced-gui-architect/actions/workflows/tests.yml)
 [![Accessibility](https://github.com/NM-TAFE/project-advanced-ui-development-team-mental-capacity/actions/workflows/accesibility.yml/badge.svg)](https://github.com/NM-TAFE/dip-programming-prj-advanced-gui-architect/actions/workflows/accesibility.yml)
+=======
+[![Build](https://github.com/NM-TAFE/dip-project-ocrroo/actions/workflows/build.yml/badge.svg)](https://github.com/NM-TAFE/project-advanced-ui-development-team-mental-capacity/actions/workflows/build.yml)
+[![Tests](https://github.com/NM-TAFE/dip-project-ocrroo/actions/workflows/tests.yml/badge.svg)](https://github.com/NM-TAFE/project-advanced-ui-development-team-mental-capacity/actions/workflows/tests.yml)
+[![Accessibility](https://github.com/NM-TAFE/dip-project-ocrroo/actions/workflows/accesibility.yml/badge.svg)](https://github.com/NM-TAFE/dip-project-ocrroo/actions/workflows/accesibility.yml)
+>>>>>>> 81db8f791d91688abd0dacc35e0d7c2e0c764791
 
 </div>
 
@@ -34,8 +40,13 @@ The program reads code from videos to assist visually impaired developers in usi
 
 ## Installation
 
+<<<<<<< HEAD
 To install and run this project, please follow the [Installation Guide](https://github.com/NM-TAFE/dip-programming-prj-advanced-gui-architect/wiki/Installation-Guide)
 in the [Wiki](https://github.com/NM-TAFE/dip-programming-prj-advanced-gui-architect/wiki).
+=======
+To install and run this project, please follow the [Installation Guide](https://github.com/NM-TAFE/dip-project-ocrroo/wiki/Installation-Guide)
+in the [Wiki](https://github.com/NM-TAFE/dip-project-ocrroo/wiki).
+>>>>>>> 81db8f791d91688abd0dacc35e0d7c2e0c764791
 
 #### Basic Installation
 
@@ -129,8 +140,13 @@ To run the application with debug/logging output in the console, use the followi
 
 ## Contributing
 
+<<<<<<< HEAD
 To contribute to this project, please follow the [Contribution Guide](https://github.com/NM-TAFE/dip-programming-prj-advanced-gui-architect/wiki/Contributor's-Guide)
 in the [Wiki](https://github.com/NM-TAFE/dip-programming-prj-advanced-gui-architect/wiki).
+=======
+To contribute to this project, please follow the [Contribution Guide](https://github.com/NM-TAFE/dip-project-ocrroo/wiki/wiki/Contribution-Guide)
+in the [Wiki](https://github.com/NM-TAFE/dip-project-ocrroo/wiki).
+>>>>>>> 81db8f791d91688abd0dacc35e0d7c2e0c764791
 
 ## Code of Conduct
 

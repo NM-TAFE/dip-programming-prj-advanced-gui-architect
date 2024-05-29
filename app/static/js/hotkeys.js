@@ -7,8 +7,17 @@
 // Initialise empty object to hold current state of keys
 const pressedKeys= {};
 
+function isTyping() {
+    const active = document.activeElement;
+    return active.tagName === "INPUT";
+}
+
 // Add event listener to whole document to check for key presses/keydown
 document.addEventListener("keydown", function (event) {
+    // If user is currently typing in an input box, don't do anything
+    if (isTyping()) {
+        return;
+    }
     pressedKeys[event.code] = true;
     // Iterate through all hotkey bindings
     for (let action in hotkeys) {
