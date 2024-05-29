@@ -1,7 +1,6 @@
 import os
 import sys
 import os.path
-sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 import logging
 import shutil
 from typing import Optional
@@ -11,6 +10,8 @@ from extract_text import ExtractText
 from flask import Flask, render_template, request, send_file, redirect
 import html
 import glob
+
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 # Initialise flask app
 app = Flask(__name__, static_url_path='/static', static_folder='static')
@@ -274,10 +275,10 @@ def update_tesseract_path():
     message = 'Could not find tesseract executable. Please enter the path manually.'
     return render_template('settings.html', current_settings=current_settings, message=message)
 
-if __name__ == "__main__":
+if __name__ == "__main__":  
     host = "localhost"
     port = 5000
-    if utils.update_port() == True: 
+    if utils.update_port(): 
         port = 5002 
     else: 
         port = port

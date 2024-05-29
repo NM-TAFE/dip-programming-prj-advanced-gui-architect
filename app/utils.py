@@ -1,5 +1,5 @@
-import sys, os.path
-sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+import sys
+import os.path
 import hashlib
 import json
 import os.path
@@ -16,6 +16,7 @@ from pytube import YouTube
 from pytube.exceptions import RegexMatchError
 from configparser import ConfigParser
 
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 def config(section: str = None, option: str = None) -> Union[ConfigParser, str]:
     """
@@ -533,7 +534,13 @@ def extract_form_values(request):
         }
     }
 
-def update_port() -> bool :
-    if sys.platform.lower() in ['darwin', 'linux']: 
+def update_port()->bool:
+    """
+    Checks if the current platform is a Unix-based system (like Darwin or Linux). If so, returns True.
+    
+    Returns: 
+        bool - True if running on a Unix-based system, False otherwise
+    """
+    if sys.platform.lower() in ['darwin', 'linux']:
         return True
     return False
