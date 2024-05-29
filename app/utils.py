@@ -296,9 +296,9 @@ def add_video_to_user_data(filename: str, video_title: str, video_hash: str, you
         return
     thumbnail = str(int(time.time())) + ".png"
     # Check if img dir exists if not create
-    if not os.path.exists("static/img"):
-        os.makedirs("static/img")
-    cv2.imwrite(f"static/img/{thumbnail}", frame)
+    if not os.path.exists("app/static/img"):
+        os.makedirs("app/static/img")
+    cv2.imwrite(f"app/static/img/{thumbnail}", frame)
     new_video = {
         "video_hash": video_hash,
         "filename": filename,
