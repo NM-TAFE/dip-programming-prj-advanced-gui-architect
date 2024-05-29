@@ -12,9 +12,9 @@
 
 **AI Powered OCR Code Recognition from Video Tutorials**
 
-[![Build](https://github.com/NM-TAFE/project-advanced-ui-development-team-mental-capacity/actions/workflows/build.yml/badge.svg)](https://github.com/NM-TAFE/dip-programming-prj-advanced-gui-architect/actions/workflows/build.yml)
-[![Tests](https://github.com/NM-TAFE/project-advanced-ui-development-team-mental-capacity/actions/workflows/tests.yml/badge.svg)](https://github.com/NM-TAFE/dip-programming-prj-advanced-gui-architect/actions/workflows/tests.yml)
-[![Accessibility](https://github.com/NM-TAFE/project-advanced-ui-development-team-mental-capacity/actions/workflows/accesibility.yml/badge.svg)](https://github.com/NM-TAFE/dip-programming-prj-advanced-gui-architect/actions/workflows/accesibility.yml)
+[![Build](https://github.com/NM-TAFE/dip-programming-prj-advanced-gui-architect/actions/workflows/build.yml/badge.svg)](https://github.com/NM-TAFE/dip-programming-prj-advanced-gui-architect/actions/workflows/build.yml)
+[![Tests](https://github.com/NM-TAFE/dip-programming-prj-advanced-gui-architect/actions/workflows/tests.yml/badge.svg)](https://github.com/NM-TAFE/dip-programming-prj-advanced-gui-architect/actions/workflows/tests.yml)
+[![Accessibility](https://github.com/NM-TAFE/dip-programming-prj-advanced-gui-architect/actions/workflows/accesibility.yml/badge.svg)](https://github.com/NM-TAFE/dip-programming-prj-advanced-gui-architect/actions/workflows/accesibility.yml)
 
 </div>
 
