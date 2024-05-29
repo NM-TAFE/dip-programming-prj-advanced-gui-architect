@@ -34,17 +34,31 @@ The program reads code from videos to assist visually impaired developers in usi
 
 ## Installation
 
-To install and run this project, please follow the [Installation Guide](https://github.com/NM-TAFE/project-advanced-ui-development-team-mental-capacity/wiki/Installation-Guide)
-in the [Wiki](https://github.com/NM-TAFE/project-advanced-ui-development-team-mental-capacity/wiki).
+To install and run this project, please follow the [Installation Guide](https://github.com/NM-TAFE/dip-programming-prj-advanced-gui-architect/wiki/Installation-Guide)
+in the [Wiki](https://github.com/NM-TAFE/dip-programming-prj-advanced-gui-architect/wiki).
 
 #### Basic Installation
 
 1. Navigate to the projects root folder
 
+   ```bash
+   cd dip-programming-prj-advanced-gui-architect/
+   ```
+   
 2. Create a virtual environment
 
+   Windows
+
    ```bash
-   python -m venv ./venv
+   python -m venv ./venv # create virtual environment
+   ./venv/Scripts/activate # activate virtual
+   ```
+   
+   Linux / Mac OS X
+   
+   ```bash
+   python3 -m venv./venv # create virtual environment
+   source venv/bin/activate # activate virtual
    ```
 
 3. Activate the virtual environment
@@ -65,8 +79,18 @@ in the [Wiki](https://github.com/NM-TAFE/project-advanced-ui-development-team-me
    ```bash
    pip install -r requirements.txt
    ```
+   
+5. Run the Application
 
-5. This project requires the Tesseract OCR Library (note: may require an installer).
+To run the application with silenced debug/logging output, execute the following command. Debug and logging outputs will be saved to an `app.log` file
+
+   ```bash
+   python app/app.py
+   ```
+
+## Additional Configuration
+
+1. This project requires the Tesseract OCR Library (note: may require an installer).
 
    Tesseract OCR Documentation: https://tesseract-ocr.github.io/tessdoc/Installation.html
    
@@ -76,40 +100,43 @@ in the [Wiki](https://github.com/NM-TAFE/project-advanced-ui-development-team-me
    new directory. The uninstaller removes the whole installation directory. If you installed Tesseract in an existing 
    directory, that directory will be removed with all its subdirectories and files.
 
-   Refer to: [AppSettings] in app/config.ini
+2. The project currently requires an API Key for OpenAI.
 
-## Configuration / Initial SetUp
+   OpenAI API: https://openai.com/index/openai-api/
 
-1. The project requires a personal ChatGPT API Key. 
+3. This project requires the PATH to your IDE executable. 
 
-   OpenAI API: https://openai.com/index/openai-api/ 
-   
-   Refer to: [AppSettings] in app/config.ini
+Update the above configuration variables into the below file:
 
-2. The project requires the path to your IDE executable: 
-   
-   Refer to: [AppSettings] in app/config.ini
-
+   ```bash
+   config.ini
+   ```
 
 ## Running the Project
 
-1. Once the Installation and Configuration/SetUp steps have been completed; navigate and run:
+1. Once the Installation and Configuration steps have been completed; navigate and run:
    ```bash
-   app/app.py
+   python app/app.py
+   ```
+   
+To run the application with debug/logging output in the console, use the following command.This is recommended for development as it automatically reloads the app when changes are detected.
+
+   ```bash
+   flask run --debug
    ```
 
-2. Once running, the terminal will display the localhost link for the project in the console.
+2. The terminal will display the localhost link for the project in the console.
 
 ## Contributing
 
-To contribute to this project, please follow the [Contribution Guide](https://github.com/NM-TAFE/project-advanced-ui-development-team-mental-capacity/wiki/Contribution-Guide)
-in the [Wiki](https://github.com/NM-TAFE/project-advanced-ui-development-team-mental-capacity/wiki).
+To contribute to this project, please follow the [Contribution Guide](https://github.com/NM-TAFE/dip-programming-prj-advanced-gui-architect/wiki/Contributor's-Guide)
+in the [Wiki](https://github.com/NM-TAFE/dip-programming-prj-advanced-gui-architect/wiki).
 
 ## Code of Conduct
 
 ---
 
-- To view the code of conduct, please visit the [Code of Conduct] page in the [Wiki](https://github.com/NM-TAFE/project-advanced-ui-development-team-mental-capacity/wiki).
+- To view the code of conduct, please visit the [Code of Conduct] page in the [Wiki](https://github.com/NM-TAFE/dip-programming-prj-advanced-gui-architect/wiki).
 
 ## License
 
