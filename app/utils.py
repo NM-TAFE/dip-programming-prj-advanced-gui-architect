@@ -84,15 +84,15 @@ def read_user_data() -> json:
     Reads the users data from json file
     :return: Returns user data as json
     """
-    if not os.path.exists("data\\userdata.json"):
-        if not os.path.exists("data\\"):
-            os.makedirs("data\\")
-        with open("data\\userdata.json", "w") as user_data:
+    if not os.path.exists("app/data/userdata.json"):
+        if not os.path.exists("app/data/"):
+            os.makedirs("app/data/")
+        with open("app/data/userdata.json", "w") as user_data:
             user_data.write(json.dumps({"all_videos": []}))
             pass
         return None
     try:
-        with open("data\\userdata.json", "r") as user_data_json:
+        with open("app/data/userdata.json", "r") as user_data_json:
             data = json.load(user_data_json)
             return data
     except JSONDecodeError:
@@ -268,7 +268,7 @@ def update_user_video_data(filename: str, progress: Optional[float] = None, capt
                 record["progress"] = round(progress)
             if capture is not None:
                 record["captures"].append(capture)
-    with open("data/userdata.json", "w") as json_data:
+    with open("app/data/userdata.json", "w") as json_data:
         json.dump(user_data, json_data, indent=4)
 
 
@@ -312,7 +312,7 @@ def add_video_to_user_data(filename: str, video_title: str, video_hash: str, you
         new_video["youtube_url"] = youtube_url
     video_capture.release()
     user_data["all_videos"].append(new_video)
-    with open("data/userdata.json", "w") as json_data:
+    with open("app/data/userdata.json", "w") as json_data:
         json.dump(user_data, json_data, indent=4)
 
 
@@ -446,7 +446,7 @@ def delete_video_from_userdata(filename: str) -> None:
         if current_video["filename"] == filename:
             all_videos.remove(current_video)
             break
-    with open("data/userdata.json", "w") as json_data:
+    with open("app/data/userdata.json", "w") as json_data:
         json.dump(user_data, json_data, indent=4)
 
 
