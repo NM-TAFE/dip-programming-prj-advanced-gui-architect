@@ -144,12 +144,6 @@ def test_file_already_exists_no_user_data(mocker):
 
 def test_set_port_for_macos():
     port = 5000
-    if sys.platform.lower() == "darwin":
-        port = 5002
-    assert not port == 5000
-
-def test_set_port_for_linux():
-    port = 5000
-    if sys.platform.lower() == "linux":
+    if sys.platform.lower() in ["darwin", 'linux']:
         port = 5002
     assert not port == 5000
