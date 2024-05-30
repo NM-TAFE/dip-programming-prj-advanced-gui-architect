@@ -1,4 +1,3 @@
-from pathlib import Path
 import os.path
 import logging
 import shutil
@@ -104,7 +103,7 @@ def serve_video():
     Serve local/downloaded video file to view/template
     :return: Video file
     """
-    video_path = str(Path(utils.get_vid_save_path(), f'{filename}').resolve())
+    video_path = f'{utils.get_vid_save_path()}{filename}'
     return send_file(video_path)
 
 
@@ -173,8 +172,7 @@ def upload_video():
     if file:
         if not os.path.exists(f"{utils.get_vid_save_path()}"):
             os.makedirs(f"{utils.get_vid_save_path()}")
-        save_path = Path(utils.get_vid_save_path(), file.filename).resolve()
-        file.save(save_path)
+        file.save(f"{utils.get_vid_save_path()}" + file.filename)
         global filename
         filename = file.filename
         file_hash = utils.hash_video_file(filename)

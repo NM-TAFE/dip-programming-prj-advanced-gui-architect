@@ -138,7 +138,7 @@ def get_vid_save_path() -> str:
             default_path.mkdir(parents=True, exist_ok=True)
         
         default_path = str(default_path)
-        return default_path
+        return directory_append_slash(default_path)
 
     vid_download_path = str(Path(vid_download_path))
     
