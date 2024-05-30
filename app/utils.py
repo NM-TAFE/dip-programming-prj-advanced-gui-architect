@@ -108,11 +108,17 @@ def read_user_data() -> Union[Any, None]:
 
 
 def directory_append_slash(directory: str) -> str:
-    # Check if directory already have slash
+    """
+    Append a trailing slash to a directory path if it doesn't already have one.
+    :param directory: The directory path to which a trailing slash will be appended, if missing.
+    :return: The directory path with a trailing slash appended, if necessary.
+    """
+    
+    # Check if directory already have trailing slash
     if directory.endswith(('/', '\\')):
         return directory
     
-    # Append slash
+    # Append trailing slash
     directory += '\\' if  os.name == 'nt' else '/'
     
     return directory
