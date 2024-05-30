@@ -275,12 +275,13 @@ def update_tesseract_path():
     message = 'Could not find tesseract executable. Please enter the path manually.'
     return render_template('settings.html', current_settings=current_settings, message=message)
 
-if __name__ == "__main__":  
+
+if __name__ == "__main__":
     host = "localhost"
     port = 5000
-    if utils.update_port(): 
-        port = 5002 
-    else: 
+    if utils.update_port():
+        port = 5002
+    else:
         port = port
     logging.basicConfig(filename="app.log", filemode="w", level=logging.DEBUG, format="%(levelname)s - %(message)s")
     print("[*] Starting OcrRoo Server")

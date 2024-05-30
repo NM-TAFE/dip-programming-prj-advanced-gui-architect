@@ -8,8 +8,8 @@ Run these tests using the pytest framework from the root of the project director
 Note: These tests use the pytest-mock plugin to replace calls to external resources with mock objects, ensuring that
 tests remain fast and do not modify external state.
 """
-import os, sys 
-
+import os
+import sys
 from app import utils
 
 
@@ -142,7 +142,7 @@ def test_file_already_exists_no_user_data(mocker):
     assert not utils.file_already_exists("4aj3sdl5a4k2sjd091u091j")
 
 
-def test_set_port_for_macos():  
+def test_set_port_for_macos():
     port = 5000
     if sys.platform.lower() in ["darwin", 'linux']:
         port = 5002
