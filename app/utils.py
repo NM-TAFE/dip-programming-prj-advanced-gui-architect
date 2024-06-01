@@ -109,7 +109,7 @@ def get_vid_save_path() -> str:
     vid_download_path = config("UserSettings", "video_save_path")
     # Set default output path for video download path
     if vid_download_path == "output_path":
-        default_path = os.path.dirname(os.getcwd()) + "\\out\\videos\\"
+        default_path = os.path.dirname(os.getcwd()) + "/out/videos/"
         if not os.path.exists(default_path):
             os.makedirs(default_path)
         return default_path
@@ -129,7 +129,7 @@ def get_output_path() -> str:
     output_path = config("UserSettings", "capture_output_path")
     # Set default output path for code files
     if output_path == "output_path":
-        default_path = os.path.dirname(os.getcwd()) + "\\out\\"
+        default_path = os.path.dirname(os.getcwd()) + "/out/"
         if not os.path.exists(default_path):
             os.makedirs(default_path)
         return default_path
