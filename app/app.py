@@ -1,16 +1,20 @@
 import os.path
 import logging
 import shutil
-from typing import Optional
 import utils
 import web_cli
-from extract_text import ExtractText
-from flask import Flask, render_template, request, send_file, redirect
 import html
 import glob
+from typing import Optional
+from extract_text import ExtractText
+from flask import Flask, render_template, request, send_file, redirect
+from preprocess import scan_video_for_code_frames
+from socket_util import init_socketio
 
 # Initialise flask app
 app = Flask(__name__, static_url_path='/static', static_folder='static')
+# Initialise flask socket
+init_socketio(app)
 # Current video
 filename: Optional[str] = None
 # Flag to check if the search process should be canceled
@@ -188,6 +192,15 @@ def upload_video():
         return redirect(utils.download_youtube_video(youtube_url))
     logging.error("Failed to upload video file")
     return redirect("/upload")
+
+
+@app.route("/start_processing_video", methods=['POST'])
+def start_processing_video():
+    if filename:
+        scan_video_for_code_frames(f"{utils.get_vid_save_path()}\\{filename}", 30)
+        return "success"
+    else:
+        return "error"
 
 
 @app.route("/play_video/<play_filename>")

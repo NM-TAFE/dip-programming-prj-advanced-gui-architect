@@ -45,8 +45,11 @@
                    aria-label="Open in IDE"></button>
             </div>
             <div class="ml-2 mt-1">
-                <h2 class="text-2xl">{{ video_data["alias"] }}</h2>
-                <p class="text-gray-400">/videos/{{ video_data["filename"] }}</p>
+{#                <h2 class="text-2xl">{{ video_data["alias"] }}</h2>#}
+{#                <p class="text-gray-400">/videos/{{ video_data["filename"] }}</p>#}
+                <p id="processingText" class="text-xl">Your video is currently processing... (0%)</p>
+                <p id="processingSubtext" class="text-gray-400">Any timestamps detected to contain code will be listed below.</p>
+                <div id="timestamps" class="flex flex-wrap flex-direction:row gap-2"></div>
             </div>
         </div>
         <div id="codeCapture" class="w-1/3 grow-0">
@@ -97,6 +100,41 @@
 <script>
     let nextCodeId = '{{ video_data["captures"]|length }}';
     let progress = '{{ video_data["progress"] }}';
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf-8">
+    var socket = io();
+    socket.on('connect', function() {
+        console.log('Connected to socket');
+        fetch('/start_processing_video', {
+            method: 'POST'
+        });
+    });
+
+    socket.on('timestampsUpdate', function(data) {
+        const timestampsDiv = document.getElementById('timestamps');
+        timestampsDiv.innerHTML = '';
+        data.forEach(function(d) {
+            const { timestamp, explanation } = d;
+            const element = document.createElement('p');
+            element.className = 'text-xl text-blue-400'
+            element.textContent = timestamp;
+            timestampsDiv.appendChild(element);
+            console.log(`Code explanation for ${timestamp}: ${explanation}`);
+        });
+    });
+
+    socket.on('processingProgressUpdate', function(progress) {
+        const processingText = document.getElementById('processingText');
+        processingText.textContent = `Your video is currently processing... (${progress})`;
+    });
+
+    socket.on('finishedProcessing', function() {
+        const processingText = document.getElementById('processingText');
+        const processingSubtext = document.getElementById('processingSubtext');
+        processingText.textContent = "Your video has finished processing!";
+        processingSubtext.textContent = "All timestamps detected to contain code are listed below.";
+    });
 </script>
 <script src="{{url_for('static', filename='js/mediaControls.js')}}"></script>
 {% endblock %}
