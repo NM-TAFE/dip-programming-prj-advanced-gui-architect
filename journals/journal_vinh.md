@@ -38,3 +38,18 @@ filepath. I started experimenting and learning pathlib, but haven't yet implemen
 
 ### Retrospective
 By the end of the week, I will try to contribute with the utils.py.
+
+
+### <4/06/2024>
+
+#### Evidence
+- [x] Attended class
+- [x] Responded to PRs/Issues
+- [ ] Met with the team online. Discord
+- [x] Commits to group repo
+
+#### Summary
+I set up an issue for native OS agnostic compatibility for Cert IV students. I responded to one of the Cert IVs who make a pull request on the issue I've set up. I responded with a comment to try suggest this code instead.
+
+### Retrospective
+By the end of the week, I will look upon more on any issues and features.
