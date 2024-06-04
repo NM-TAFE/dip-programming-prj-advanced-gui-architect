@@ -8,7 +8,7 @@ import logging
 import time
 import cv2
 from json import JSONDecodeError
-from typing import Union, Optional, Any, List
+from typing import Union, Optional, Any, List, Dict
 import openai
 import pytesseract
 from pytube import YouTube
@@ -85,7 +85,7 @@ def format_timestamp(seconds: int) -> str:
     return f'{str(minutes).zfill(2)}:{str(remaining_seconds).zfill(2)}'
 
 
-def read_user_data() -> Union[Any, None]:
+def read_user_data() -> Optional[Any]:
     """
     Reads the users data from json file
     :return: Returns user data as json
@@ -383,7 +383,7 @@ def get_setup_progress() -> List[str]:
     return setup_progress
 
 
-def parse_video_data() -> List[list]:
+def parse_video_data() -> dict:
     """
     Gets all video data from userdata storage and parses all data for in progress videos
     :return: Array containing two arrays, 1 with all videos 1 with in progress videos
