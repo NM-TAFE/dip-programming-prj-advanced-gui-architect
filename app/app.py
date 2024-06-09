@@ -30,7 +30,7 @@ def playsound_notification(audio_file):
     if audio_file is not None:
         playsound(file_path)
 
-
+playsound_notification("static/audio/capture_success_tone.wav")
 
 @app.context_processor
 def utility_processor():
@@ -152,8 +152,10 @@ def send_to_ide():
     code = request.get_json().get("code_snippet")
     unescaped_code = html.unescape(code)
     if utils.send_code_snippet_to_ide(filename, unescaped_code):
+        playsound_notification("static/audio/capture_success_tone.wav")
         return "success"
     else:
+        playsound_notification("static/audio/capture_fail_tone.wav")
         return "fail"
 
 
