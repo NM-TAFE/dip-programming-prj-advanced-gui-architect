@@ -28,10 +28,12 @@ class ExtractText:
         """
         frame = ExtractText.extract_frame_at_timestamp(filename, timestamp)
         if frame is not None:
+            utils.playsound_notification("static/audio/capture_success_tone.wav")
             extracted_text = pytesseract.image_to_string(frame)
             logging.info(f"Successfully extracted code from frame @ {timestamp}s in file {filename}")
             return ExtractText.format_raw_ocr_string(extracted_text)
         else:
+            utils.playsound_notification("static/audio/capture_fail_tone.wav")
             logging.error(f"Unable to extract code from frame @ {timestamp}s in file {filename}")
             return "ERROR"
 
