@@ -12,7 +12,6 @@ import os
 
 from app import utils
 
-
 def load_dummy_user_data():
     """
     Dummy data for testing various functions in utils.py
