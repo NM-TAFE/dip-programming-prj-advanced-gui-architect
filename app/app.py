@@ -8,6 +8,7 @@ from extract_text import ExtractText
 from flask import Flask, render_template, request, send_file, redirect
 import html
 import glob
+from playsound import playsound
 
 # Initialise flask app
 app = Flask(__name__, static_url_path='/static', static_folder='static')
@@ -16,6 +17,10 @@ filename: Optional[str] = None
 # Flag to check if the search process should be canceled
 cancel_search_flag: bool = False
 
+
+def playsound_notification(audio_file):
+    if audio_file is not None:
+        playsound(audio_file)
 
 @app.context_processor
 def utility_processor():
