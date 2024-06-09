@@ -15,6 +15,7 @@ from pytube.exceptions import RegexMatchError
 from configparser import ConfigParser
 from playsound import playsound
 
+
 def playsound_notification(audio_file):
     """
     Play a notification sound. Requires the playsound package to be installed.
