@@ -17,10 +17,6 @@ filename: Optional[str] = None
 cancel_search_flag: bool = False
 
 
-
-
-utils.playsound_notification("static/audio/capture_success_tone.wav")
-
 @app.context_processor
 def utility_processor():
     """
