@@ -8,7 +8,6 @@ from extract_text import ExtractText
 from flask import Flask, render_template, request, send_file, redirect
 import html
 import glob
-from playsound import playsound
 
 # Initialise flask app
 app = Flask(__name__, static_url_path='/static', static_folder='static')
@@ -18,19 +17,9 @@ filename: Optional[str] = None
 cancel_search_flag: bool = False
 
 
-def playsound_notification(audio_file):
-    """
-    Play a notification sound. Requires the playsound package to be installed.
-    :args: audio_file: Path to the audio_file in the app/static/audio folder
-    """
-    file_path = os.getcwd()
-    file_name = audio_file
-    file_path = os.path.join(file_path, file_name)
-    print(file_path)
-    if audio_file is not None:
-        playsound(file_path)
 
-playsound_notification("static/audio/capture_success_tone.wav")
+
+utils.playsound_notification("static/audio/capture_success_tone.wav")
 
 @app.context_processor
 def utility_processor():
@@ -152,10 +141,10 @@ def send_to_ide():
     code = request.get_json().get("code_snippet")
     unescaped_code = html.unescape(code)
     if utils.send_code_snippet_to_ide(filename, unescaped_code):
-        playsound_notification("static/audio/capture_success_tone.wav")
+        utils.playsound_notification("static/audio/capture_success_tone.wav")
         return "success"
     else:
-        playsound_notification("static/audio/capture_fail_tone.wav")
+        utils.playsound_notification("static/audio/capture_fail_tone.wav")
         return "fail"
 
 
