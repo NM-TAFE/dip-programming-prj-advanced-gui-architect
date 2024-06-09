@@ -19,6 +19,10 @@ cancel_search_flag: bool = False
 
 
 def playsound_notification(audio_file):
+    """
+    Play a notification sound. Requires the playsound package to be installed.
+    :args: audio_file: Path to the audio_file in the app/static/audio folder
+    """
     if audio_file is not None:
         playsound(audio_file)
 
