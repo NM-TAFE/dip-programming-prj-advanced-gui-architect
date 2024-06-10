@@ -9,9 +9,10 @@ import utils
 from socket_util import get_socketio
 
 
-def query_llama(system_prompt, prompt, model="llama3", images=None):
+def query_llama(llama_endpoint, system_prompt, prompt, model="llama3", images=None):
     """
     Query the llama AI LLM
+    :param llama_endpoint: The endpoint of the llama AI LLM
     :param system_prompt: The System prompt to use
     :param prompt: The prompt to use
     :param model: The AI model to use
@@ -21,7 +22,7 @@ def query_llama(system_prompt, prompt, model="llama3", images=None):
     if images is None:
         images = []
 
-    req = requests.post('http://localhost:11434/api/chat', json={
+    req = requests.post(llama_endpoint, json={
         'model': model,
         'messages': [
             {
@@ -37,6 +38,7 @@ def query_llama(system_prompt, prompt, model="llama3", images=None):
         'stream': False
     })
 
+    print(req)
     body = req.json()
     return body['message']['content']
 
@@ -113,12 +115,13 @@ def get_full_code(code_json):
     return "\n".join(unique_lines) + "\n"
 
 
-def scan_video_for_code_frames(filename, interval_seconds=5, programming_language="Python", provide_formatted_code=True, provide_code_explanations=True):
+def scan_video_for_code_frames(filename, llama_endpoint, interval_seconds=5, programming_language="Python", provide_formatted_code=True, provide_code_explanations=True):
     """
     Scans a video for frames containing code at approximately every interval_seconds.
-    :param filename: The files name.
-    :param interval_seconds: Interval in seconds to capture frames.
-    :param programming_language: The programming language of the video.
+    :param filename: The files name
+    :param llama_endpoint: The endpoint of the llama AI LLM
+    :param interval_seconds: Interval in seconds to capture frames
+    :param programming_language: The programming language of the video
     :param provide_formatted_code: Whether the formatted code is included in the response
     :param provide_code_explanations: Whether the code explanation is included in the response
     :return: JSON object with timestamps and detected code.
@@ -174,14 +177,14 @@ def scan_video_for_code_frames(filename, interval_seconds=5, programming_languag
             print(f"Processing frame {frame_count}")
             socketio.emit("processingProgressUpdate", f"{math.floor((frame_count / total_frames) * 100)}%")
             text = extract_text_from_frame(frame)
-            is_code = query_llama(is_code_prompt, text)
+            is_code = query_llama(llama_endpoint, is_code_prompt, text)
             if is_code.strip().lower() == 'true':
                 formatted_code, code_explanation = None, None
                 timestamp = frame_count / fps
                 print(f"Code detected at timestamp: {timestamp}")
 
                 if provide_formatted_code:
-                    formatted_code = extract_code(query_llama(format_code_prompt, text))
+                    formatted_code = extract_code(query_llama(llama_endpoint, format_code_prompt, text))
 
                     if not formatted_code:
                         print(f"Could not extract code from frame {frame_count}")
@@ -189,7 +192,7 @@ def scan_video_for_code_frames(filename, interval_seconds=5, programming_languag
                         continue
 
                 if provide_code_explanations:
-                    code_explanation = query_llama(describe_code_prompt, text)
+                    code_explanation = query_llama(llama_endpoint, describe_code_prompt, text)
                     print(f"Code from frame {frame_count} explanation: {code_explanation}")
 
                 code_frames.append({"seconds": timestamp, "code": formatted_code, "explanation": code_explanation})
@@ -200,7 +203,7 @@ def scan_video_for_code_frames(filename, interval_seconds=5, programming_languag
     full_code = None
 
     if provide_formatted_code:
-        formatted = query_llama(provide_full_code_prompt, get_full_code(code_frames))
+        formatted = query_llama(llama_endpoint, provide_full_code_prompt, get_full_code(code_frames))
         print(formatted)
         full_code = extract_code(formatted)
         print(full_code)

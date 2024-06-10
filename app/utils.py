@@ -498,6 +498,7 @@ def get_current_settings() -> dict:
     current_settings = {
         'AppSettings': {
             'openai_api_key': config_file.get('AppSettings', 'openai_api_key'),
+            'llama_endpoint': config_file.get('AppSettings', 'llama_endpoint'),
             'ide_executable': config_file.get('AppSettings', 'ide_executable'),
             'tesseract_executable': config_file.get('AppSettings', 'tesseract_executable'),
         },
@@ -526,6 +527,9 @@ def extract_form_values(request):
     new_openai_api_key = str(request.form.get('openai_api_key'))
     if new_openai_api_key == '':
         new_openai_api_key = 'your_openai_api_key_here'
+    new_llama_endpoint = str(request.form.get('llama_endpoint'))
+    if new_llama_endpoint == '':
+        new_llama_endpoint = 'your_llama_endpoint_here'
     preprocess_videos = request.form.get('preprocess_videos') == 'True'
     preprocess_interval = str(request.form.get('preprocess_interval'))
     preprocess_format_code = request.form.get('preprocess_format_code') == 'True'
@@ -549,6 +553,7 @@ def extract_form_values(request):
     return {
         'AppSettings': {
             'openai_api_key': new_openai_api_key,
+            'llama_endpoint': new_llama_endpoint,
             'ide_executable': new_path_to_ide,
             'tesseract_executable': new_path_to_tesseract,
         },

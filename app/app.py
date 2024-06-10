@@ -198,11 +198,12 @@ def upload_video():
 def start_processing_video():
     current_settings = utils.get_current_settings()
     if filename and current_settings["UserSettings"]["preprocess_videos"] == 'True':
+        llama_endpoint = current_settings["AppSettings"]["llama_endpoint"]
         preprocess_interval = int(current_settings["UserSettings"]["preprocess_interval"])
         preprocess_format_code = current_settings["UserSettings"]["preprocess_format_code"] == 'True'
         preprocess_code_explanation = current_settings["UserSettings"]["preprocess_code_explanation"] == 'True'
         programming_language = current_settings["UserSettings"]["programming_language"]
-        json = scan_video_for_code_frames(filename, preprocess_interval, programming_language, preprocess_format_code, preprocess_code_explanation)
+        json = scan_video_for_code_frames(filename, llama_endpoint, preprocess_interval, programming_language, preprocess_format_code, preprocess_code_explanation)
 
         output_file = f"{utils.get_processed_vid_info_save_path()}/{filename}.json"
         with open(output_file, "w") as output:
