@@ -8,7 +8,7 @@ import glob
 from typing import Optional
 from extract_text import ExtractText
 from flask import Flask, render_template, request, send_file, redirect, jsonify
-from preprocess import scan_video_for_code_frames
+from preprocess import scan_video_for_code_frames, get_full_code
 from socket_util import init_socketio
 
 # Initialise flask app
@@ -203,9 +203,11 @@ def start_processing_video():
         preprocess_code_explanation = current_settings["UserSettings"]["preprocess_code_explanation"] == 'True'
         programming_language = current_settings["UserSettings"]["programming_language"]
         json = scan_video_for_code_frames(filename, preprocess_interval, programming_language, preprocess_format_code, preprocess_code_explanation)
+
         output_file = f"{utils.get_processed_vid_info_save_path()}/{filename}.json"
         with open(output_file, "w") as output:
             output.write(json)
+
         return "success"
     else:
         return "error"

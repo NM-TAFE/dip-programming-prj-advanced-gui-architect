@@ -103,6 +103,16 @@ def extract_code(text):
         return None
 
 
+def get_full_code(code_json):
+    unique_lines = set()
+
+    for item in code_json:
+        code_lines = item["code"].splitlines()
+        unique_lines.update(code_lines)
+
+    return "\n".join(unique_lines) + "\n"
+
+
 def scan_video_for_code_frames(filename, interval_seconds=5, programming_language="Python", provide_formatted_code=True, provide_code_explanations=True):
     """
     Scans a video for frames containing code at approximately every interval_seconds.
@@ -132,6 +142,17 @@ def scan_video_for_code_frames(filename, interval_seconds=5, programming_languag
         "Only include a simple explanation. Your explanation is to be a maximum of ~20-30 words. "
         "Do NOT go over this limit. If you cannot provide an explanation, simply respond with Unknown. "
         "Do not reply with anything other than a simple explanation or Unknown."
+    )
+
+    provide_full_code_prompt = (
+        f"You are a helpful coding assistant. The language you are working in is {programming_language}. "
+        f"You will be given blocks of code and your job is to take those blocks of code and "
+        f"properly format them, ensuring that there are no duplicate. This includes functions doing the same thing. "
+        f"If 2 functions do the same thing, you must determine the most updated one and use that. You are NOT to add "
+        f"new imports, or use things that were not already being used. You are also to remove unnecessary lines, "
+        f"ensure that everything is correct syntactically and that there are proper indentations. You must then "
+        f"return the corrected version. You must NOT return anything other than the corrected code, or ERROR if you "
+        f"failed to correct it."
     )
 
     video_path = f"{utils.get_vid_save_path()}\\{filename}"
@@ -176,7 +197,15 @@ def scan_video_for_code_frames(filename, interval_seconds=5, programming_languag
 
         frame_count += 1
 
-    socketio.emit("finishedProcessing")
+    full_code = None
+
+    if provide_formatted_code:
+        formatted = query_llama(provide_full_code_prompt, get_full_code(code_frames))
+        print(formatted)
+        full_code = extract_code(formatted)
+        print(full_code)
+
+    socketio.emit("finishedProcessing", full_code)
     cap.release()
     cv2.destroyAllWindows()
     return json.dumps(code_frames, indent=4)

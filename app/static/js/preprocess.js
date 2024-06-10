@@ -4,6 +4,12 @@ function formatTimestamp(seconds) {
     return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
 }
 
+function formatFullCode(code) {
+    code = code.replace(/\\n/g, "\n");
+    code = code.replace(/\\"/g, "\"");
+    return code;
+}
+
 document.addEventListener("DOMContentLoaded", function() {
     var videoPlayer = document.getElementById("videoPlayer");
     var progressBar = document.getElementById("progressBar");
@@ -50,10 +56,13 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // Sent once the processing is complete
-    socket.on('finishedProcessing', function() {
+    socket.on('finishedProcessing', function(full_code) {
         const processingText = document.getElementById('processingText');
         const processingSubtext = document.getElementById('processingSubtext');
         processingText.textContent = "Your video has finished processing!";
         processingSubtext.textContent = "All timestamps detected to contain code are listed below.";
+        if (full_code && typeof full_code === "string") {
+            console.log(formatFullCode(full_code));
+        }
     });
 });
