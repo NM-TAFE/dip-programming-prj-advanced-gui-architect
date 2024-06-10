@@ -504,6 +504,8 @@ def get_current_settings() -> dict:
         'UserSettings': {
             'preprocess_videos': config_file.get('UserSettings', 'preprocess_videos'),
             'preprocess_interval': config_file.get('UserSettings', 'preprocess_interval'),
+            'preprocess_format_code': config_file.get('UserSettings', 'preprocess_format_code'),
+            'preprocess_code_explanation': config_file.get('UserSettings', 'preprocess_code_explanation'),
             'programming_language': config_file.get('UserSettings', 'programming_language'),
             'output_path': config_file.get('UserSettings', 'capture_output_path'),
             'processed_output_path': config_file.get('UserSettings', 'processed_video_save_path'),
@@ -526,6 +528,8 @@ def extract_form_values(request):
         new_openai_api_key = 'your_openai_api_key_here'
     preprocess_videos = request.form.get('preprocess_videos') == 'True'
     preprocess_interval = str(request.form.get('preprocess_interval'))
+    preprocess_format_code = request.form.get('preprocess_format_code') == 'True'
+    preprocess_code_explanation = request.form.get('preprocess_code_explanation') == 'True'
     new_programming_language = str(request.form.get('programming_language'))
     ui_sound_enabled = request.form.get('mute_ui_sounds') == 'True'
     new_path_to_ide = str(request.form.get('ide_executable'))
@@ -551,6 +555,8 @@ def extract_form_values(request):
         'UserSettings': {
             'preprocess_videos': preprocess_videos,
             'preprocess_interval': preprocess_interval,
+            'preprocess_format_code': preprocess_format_code,
+            'preprocess_code_explanation': preprocess_code_explanation,
             'programming_language': new_programming_language,
             'output_path': new_output_path,
             'preprocess_output_path': new_preprocess_output_path,

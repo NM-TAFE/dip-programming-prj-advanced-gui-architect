@@ -128,7 +128,7 @@ def scan_video_for_code_frames(filename, interval_seconds=5, programming_languag
     )
 
     describe_code_prompt = (
-        f"You are a helpful coding assistant. You will be given blocks of {programming_language} code and your  "
+        f"You are a helpful coding assistant. You will be given blocks of {programming_language} code and your "
         "job is to describe what they do to the best of your ability. Do NOT include a title. "
         "Only include a simple explanation. Your explanation is to be a maximum of ~20-30 words. "
         "Do NOT go over this limit. If you cannot provide an explanation, simply respond with Unknown. "

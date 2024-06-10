@@ -74,6 +74,36 @@
                              class="mt-1 p-1 w-full rounded-md border-gray-200 border shadow-sm" value="{{ current_settings.UserSettings.preprocess_interval }}">
                     </div>
                     <div>
+                        <label for="preprocessFormatCode" class="block font-medium text-gray-700">Format Code (Preprocessing)</label>
+                        <label for="preprocessFormatCode" class="block text-gray-500 text-xs">If enabled, preprocessing will take longer. If you disable this, only timestamps displaying code will be shown, no code or explanation will be provided.</label>
+                        <select name="preprocess_format_code" id="preprocessFormatCode" class="mt-1 p-1 w-full rounded-md border-gray-200
+                          border bg-white shadow-sm">
+                            <option value="False"
+                                    {% if current_settings.UserSettings.preprocess_format_code == 'False' %}selected{% endif %}>
+                                Disabled
+                            </option>
+                            <option value="True"
+                                    {% if current_settings.UserSettings.preprocess_format_code == 'True' %}selected{% endif %}>
+                                Enabled
+                            </option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="preprocessCodeExplanations" class="block font-medium text-gray-700">Code Explanations (Preprocessing)</label>
+                        <label for="preprocessCodeExplanations" class="block text-gray-500 text-xs">If enabled, preprocessing will take longer. If you disable this, only timestamps and formatted code will be shown, no code explanation will be provided.</label>
+                        <select name="preprocess_code_explanation" id="preprocessCodeExplanations" class="mt-1 p-1 w-full rounded-md border-gray-200
+                          border bg-white shadow-sm">
+                            <option value="False"
+                                    {% if current_settings.UserSettings.preprocess_code_explanation == 'False' %}selected{% endif %}>
+                                Disabled
+                            </option>
+                            <option value="True"
+                                    {% if current_settings.UserSettings.preprocess_code_explanation == 'True' %}selected{% endif %}>
+                                Enabled
+                            </option>
+                        </select>
+                    </div>
+                    <div>
                         <label for="programmingLanguage" class="block font-medium text-gray-700">Programming
                             Language</label>
                         <input type="text" id="programmingLanguage" name="programming_language"

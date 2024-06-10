@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    /* This message is sent everytime a frame is detected to contain code. It contains the following:
+    /* This message is sent everytime a frame is detected to contain code. It contains an array full of the following:
     {
         code: The formatted code (string)
         explanation: An AI generated explanation of the formatted code (string)
