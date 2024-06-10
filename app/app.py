@@ -198,7 +198,8 @@ def upload_video():
 def start_processing_video():
     current_settings = utils.get_current_settings()
     if filename and current_settings["UserSettings"]["preprocess_videos"] == 'True':
-        json = scan_video_for_code_frames(filename, 30)
+        preprocess_interval = int(current_settings["UserSettings"]["preprocess_interval"])
+        json = scan_video_for_code_frames(filename, preprocess_interval)
         output_file = f"{utils.get_processed_vid_info_save_path()}/{filename}.json"
         with open(output_file, "w") as output:
             output.write(json)
@@ -238,6 +239,7 @@ def delete_video(delete_filename):
 def update_settings():
     if request.method == "POST":
         new_values = utils.extract_form_values(request)
+        print(new_values)
         utils.update_configuration(new_values)
         return redirect('/settings')
     current_settings = utils.get_current_settings()
