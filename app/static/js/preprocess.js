@@ -18,10 +18,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     /* This message is sent everytime a frame is detected to contain code. It contains an array full of the following:
     {
-        code: The formatted code (string)
-        explanation: An AI generated explanation of the formatted code (string)
+        code: The formatted code (string | null)
+        explanation: An AI generated explanation of the formatted code (string | null)
         seconds: How many seconds into the video the frame is (number)
-        timestamp: A formatted version of seconds (such as 0:25, etc.) (string)
     }
      */
     socket.on('timestampsUpdate', function(data) {
