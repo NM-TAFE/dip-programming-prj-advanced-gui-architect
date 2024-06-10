@@ -1,4 +1,12 @@
+function formatTimestamp(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+}
+
 document.addEventListener("DOMContentLoaded", function() {
+    var videoPlayer = document.getElementById("videoPlayer");
+    var progressBar = document.getElementById("progressBar");
     var socket = io();
 
     // Connect to local websocket
@@ -20,12 +28,16 @@ document.addEventListener("DOMContentLoaded", function() {
         const timestampsDiv = document.getElementById('timestamps');
         timestampsDiv.innerHTML = '';
         data.forEach(function(d) {
-            const { timestamp, explanation } = d;
+            const { seconds, explanation } = d;
+            const timestamp = formatTimestamp(seconds);
             const element = document.createElement('button');
             element.className = 'text-xl text-blue-400 p-2 rounded';
             element.textContent = timestamp;
             element.addEventListener('click', function() {
-                alert(`Explanation for ${timestamp}: ${explanation}`);
+                videoPlayer.currentTime = seconds;
+                progressBar.value = (seconds / videoPlayer.duration) * 100;
+                const currentTimestamp = document.getElementById('currentTimestamp');
+                currentTimestamp.innerHTML = formatTimestamp(seconds);
                 console.log(`Code explanation for ${timestamp}: ${explanation}`);
             });
             timestampsDiv.appendChild(element);

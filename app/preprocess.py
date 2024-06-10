@@ -5,7 +5,6 @@ import pytesseract
 import re
 import cv2
 import json
-import base64
 import utils
 from socket_util import get_socketio
 
@@ -153,10 +152,8 @@ def scan_video_for_code_frames(filename, interval_seconds=5, programming_languag
         if frame_count % frame_interval == 0:
             print(f"Processing frame {frame_count}")
             socketio.emit("processingProgressUpdate", f"{math.floor((frame_count / total_frames) * 100)}%")
-            text = extract_text_from_frame(frame)  # clean_code_text(extract_text_from_frame(frame))
+            text = extract_text_from_frame(frame)
             is_code = query_llama(is_code_prompt, text)
-            # print(f"Llama response: {is_code}")
-            # print(text)
             if is_code.strip().lower() == 'true':
                 formatted_code, code_explanation = None, None
                 timestamp = frame_count / fps
@@ -170,12 +167,11 @@ def scan_video_for_code_frames(filename, interval_seconds=5, programming_languag
                         frame_count += 1
                         continue
 
-                    # print(f"Formatted code from frame {frame_count}: {formatted_code}")
                 if provide_code_explanations:
                     code_explanation = query_llama(describe_code_prompt, text)
                     print(f"Code from frame {frame_count} explanation: {code_explanation}")
 
-                code_frames.append({"seconds": timestamp, "timestamp": f"{int(timestamp // 60):02d}:{int(timestamp % 60):02d}", "code": formatted_code, "explanation": code_explanation})
+                code_frames.append({"seconds": timestamp, "code": formatted_code, "explanation": code_explanation})
                 socketio.emit("timestampsUpdate", code_frames)
 
         frame_count += 1
