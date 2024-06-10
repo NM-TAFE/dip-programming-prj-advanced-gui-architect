@@ -7,7 +7,7 @@ import html
 import glob
 from typing import Optional
 from extract_text import ExtractText
-from flask import Flask, render_template, request, send_file, redirect
+from flask import Flask, render_template, request, send_file, redirect, jsonify
 from preprocess import scan_video_for_code_frames
 from socket_util import init_socketio
 
@@ -196,8 +196,12 @@ def upload_video():
 
 @app.route("/start_processing_video", methods=['POST'])
 def start_processing_video():
-    if filename:
-        scan_video_for_code_frames(f"{utils.get_vid_save_path()}\\{filename}", 30)
+    current_settings = utils.get_current_settings()
+    if filename and current_settings["UserSettings"]["preprocess_videos"] == 'True':
+        json = scan_video_for_code_frames(filename, 30)
+        output_file = f"{utils.get_processed_vid_info_save_path()}/{filename}.json"
+        with open(output_file, "w") as output:
+            output.write(json)
         return "success"
     else:
         return "error"
@@ -213,7 +217,8 @@ def video(play_filename):
     if utils.filename_exists_in_userdata(play_filename):
         global filename
         filename = play_filename
-        return render_template("player.html", filename=filename, video_data=utils.get_video_data(filename))
+        current_settings = utils.get_current_settings()
+        return render_template("player.html", filename=filename, video_data=utils.get_video_data(filename), current_settings=current_settings)
     return redirect("/")
 
 

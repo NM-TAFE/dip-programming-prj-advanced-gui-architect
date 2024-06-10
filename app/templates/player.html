@@ -47,8 +47,20 @@
             <div class="ml-2 mt-1">
 {#                <h2 class="text-2xl">{{ video_data["alias"] }}</h2>#}
 {#                <p class="text-gray-400">/videos/{{ video_data["filename"] }}</p>#}
-                <p id="processingText" class="text-xl">Your video is currently processing... (0%)</p>
-                <p id="processingSubtext" class="text-gray-400">Any timestamps detected to contain code will be listed below.</p>
+                <p id="processingText" class="text-xl">
+                    {% if current_settings.UserSettings.preprocess_videos == 'True' %}
+                        Your video will begin processing soon.
+                    {%  else %}
+                        You have preprocessing disabled.
+                    {% endif %}
+                </p>
+                <p id="processingSubtext" class="text-gray-400">
+                    {% if current_settings.UserSettings.preprocess_videos == 'True' %}
+                        Any timestamps detected to contain code will be listed below.
+                    {%  else %}
+                        Any timestamps detected to contain code would've been listed below.
+                    {% endif %}
+                </p>
                 <div id="timestamps" class="flex flex-wrap flex-direction:row gap-2"></div>
             </div>
         </div>
@@ -104,6 +116,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
 <script type="text/javascript" charset="utf-8">
     var socket = io();
+    // Connect to local websocket
     socket.on('connect', function() {
         console.log('Connected to socket');
         fetch('/start_processing_video', {
@@ -111,24 +124,40 @@
         });
     });
 
+    /* This message is sent everytime a frame is detected to contain code. It contains the following:
+    {
+        code: The formatted code (string)
+        explanation: An AI generated explanation of the formatted code (string)
+        seconds: How many seconds into the video the frame is (number)
+        timestamp: A formatted version of seconds (such as 0:25, etc.) (string)
+    }
+     */
     socket.on('timestampsUpdate', function(data) {
         const timestampsDiv = document.getElementById('timestamps');
         timestampsDiv.innerHTML = '';
         data.forEach(function(d) {
             const { timestamp, explanation } = d;
-            const element = document.createElement('p');
-            element.className = 'text-xl text-blue-400'
+            {#const element = document.createElement('p');#}
+            {#element.className = 'text-xl text-blue-400'#}
+            {#element.textContent = timestamp;#}
+            const element = document.createElement('button');
+            element.className = 'text-xl text-blue-400 bg-gray-200 p-2 rounded';
             element.textContent = timestamp;
+            element.addEventListener('click', function() {
+                alert(`Explanation for ${timestamp}: ${explanation}`);
+                console.log(`Code explanation for ${timestamp}: ${explanation}`);
+            });
             timestampsDiv.appendChild(element);
-            console.log(`Code explanation for ${timestamp}: ${explanation}`);
         });
     });
 
+    // This message is sent everytime a frame has finished being examined
     socket.on('processingProgressUpdate', function(progress) {
         const processingText = document.getElementById('processingText');
         processingText.textContent = `Your video is currently processing... (${progress})`;
     });
 
+    // Sent once the processing is complete
     socket.on('finishedProcessing', function() {
         const processingText = document.getElementById('processingText');
         const processingSubtext = document.getElementById('processingSubtext');

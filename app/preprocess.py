@@ -6,6 +6,7 @@ import re
 import cv2
 import json
 import base64
+import utils
 from socket_util import get_socketio
 
 
@@ -103,10 +104,10 @@ def extract_code(text):
         return None
 
 
-def scan_video_for_code_frames(video_path, interval_seconds=5, programming_language="Python", provide_formatted_code=True, provide_code_explanations=True):
+def scan_video_for_code_frames(filename, interval_seconds=5, programming_language="Python", provide_formatted_code=True, provide_code_explanations=True):
     """
     Scans a video for frames containing code at approximately every interval_seconds.
-    :param video_path: Path to the video file.
+    :param filename: The files name.
     :param interval_seconds: Interval in seconds to capture frames.
     :param programming_language: The programming language of the video.
     :param provide_formatted_code: Whether the formatted code is included in the response
@@ -134,6 +135,7 @@ def scan_video_for_code_frames(video_path, interval_seconds=5, programming_langu
         "Do not reply with anything other than a simple explanation or Unknown."
     )
 
+    video_path = f"{utils.get_vid_save_path()}\\{filename}"
     socketio = get_socketio()
     cap = cv2.VideoCapture(video_path)
     fps = cap.get(cv2.CAP_PROP_FPS)
@@ -181,6 +183,4 @@ def scan_video_for_code_frames(video_path, interval_seconds=5, programming_langu
     socketio.emit("finishedProcessing")
     cap.release()
     cv2.destroyAllWindows()
-
-    # result_json = json.dumps({"code_frames": code_frames}, indent=4)
-    # return result_json
+    return json.dumps(code_frames, indent=4)

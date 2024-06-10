@@ -53,6 +53,20 @@
                 <div class="mb-8">
                     <h2 class="text-2xl">Preferences</h2>
                     <hr class="my-2">
+                    <div class="mt-2">
+                        <label for="preprocessVideos" class="block font-medium text-gray-700">Preprocess Videos</label>
+                        <select name="preprocess_videos" id="preprocessVideos" class="mt-1 p-1 w-full rounded-md border-gray-200
+                          border bg-white shadow-sm">
+                            <option value="False"
+                                    {% if current_settings.UserSettings.preprocess_videos == 'False' %}selected{% endif %}>
+                                Disabled
+                            </option>
+                            <option value="True"
+                                    {% if current_settings.UserSettings.preprocess_videos == 'True' %}selected{% endif %}>
+                                Enabled
+                            </option>
+                        </select>
+                    </div>
                     <div>
                         <label for="programmingLanguage" class="block font-medium text-gray-700">Programming
                             Language</label>
@@ -76,6 +90,11 @@
                     <div>
                       <label for="videoSavePath" class="block font-medium text-gray-700">Video Save Path</label>
                       <input type="text" id="videoSavePath" placeholder="..\out\videos\"
+                             class="mt-1 p-1 w-full rounded-md border-gray-200 border shadow-sm"/>
+                    </div>
+                    <div>
+                      <label for="processedSavePath" class="block font-medium text-gray-700">Processed JSON Save Path</label>
+                      <input type="text" id="processedSavePath" placeholder="..\out\processed\"
                              class="mt-1 p-1 w-full rounded-md border-gray-200 border shadow-sm"/>
                     </div>
                     <div class="mt-2">
