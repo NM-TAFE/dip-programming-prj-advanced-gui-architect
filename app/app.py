@@ -199,7 +199,8 @@ def start_processing_video():
     current_settings = utils.get_current_settings()
     if filename and current_settings["UserSettings"]["preprocess_videos"] == 'True':
         preprocess_interval = int(current_settings["UserSettings"]["preprocess_interval"])
-        json = scan_video_for_code_frames(filename, preprocess_interval)
+        programming_language = current_settings["UserSettings"]["programming_language"]
+        json = scan_video_for_code_frames(filename, preprocess_interval, programming_language)
         output_file = f"{utils.get_processed_vid_info_save_path()}/{filename}.json"
         with open(output_file, "w") as output:
             output.write(json)

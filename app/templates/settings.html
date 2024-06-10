@@ -70,8 +70,8 @@
                     <div>
                         <label for="preprocessInterval" class="block font-medium text-gray-700">Preprocess Interval (seconds)</label>
                         <label for="preprocessInterval" class="block text-gray-500 text-xs">The lower this number is, the more GPU intensive. Lower numbers will cause the video to take longer to process, but will give a more accurate result.</label>
-                        <input name="preprocess_interval" type="number" id="preprocessInterval" placeholder="{{ current_settings.UserSettings.preprocess_interval }}"
-                             class="mt-1 p-1 w-full rounded-md border-gray-200 border shadow-sm">
+                        <input name="preprocess_interval" type="number" id="preprocessInterval" placeholder="Preprocessing Interval"
+                             class="mt-1 p-1 w-full rounded-md border-gray-200 border shadow-sm" value="{{ current_settings.UserSettings.preprocess_interval }}">
                     </div>
                     <div>
                         <label for="programmingLanguage" class="block font-medium text-gray-700">Programming
