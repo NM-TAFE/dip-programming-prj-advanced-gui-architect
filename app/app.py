@@ -230,6 +230,7 @@ def update_settings():
 def reset_settings():
     print("Current working directory:", os.getcwd())
     # Delete the existing config.ini file
+    os.chdir(str(utils.APP_DIR))
     if os.path.exists('config.ini'):
         os.remove('config.ini')
     shutil.copy('config.example.ini', 'config.ini')

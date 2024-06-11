@@ -1,19 +1,23 @@
 import hashlib
 import json
 import os.path
+from pathlib import Path
 import shutil
 import subprocess
 import logging
 import time
 import cv2
 from json import JSONDecodeError
-from typing import Union, Optional
+from typing import Union, Optional, Any, List, Dict
 import openai
 import pytesseract
 from pytube import YouTube
 from pytube.exceptions import RegexMatchError
 from configparser import ConfigParser
 
+FILE_PATH = Path(__file__).resolve()  # Absolute Path of utils.py
+APP_DIR = FILE_PATH.parent
+PROJ_ROOT = APP_DIR.parent
 
 def config(section: str = None, option: str = None) -> Union[ConfigParser, str]:
     """
@@ -24,11 +28,14 @@ def config(section: str = None, option: str = None) -> Union[ConfigParser, str]:
     :param option: [Optional] Key/option of value to retrieve
     :return: Return string or ConfigParser object
     """
+    
     if (section is None) != (option is None):
         raise SyntaxError("section AND option parameters OR no parameters must be passed to function config()")
     parser = ConfigParser()
-    if not os.path.exists("config.ini"):
-        shutil.copy("config.example.ini", "config.ini")
+    if not (APP_DIR / 'config.ini').exists():
+        src_path = str(APP_DIR / 'config.example.ini')
+        dst_path = str(APP_DIR / 'config.ini')
+        shutil.copy(src_path, dst_path)
     parser.read("config.ini")
     if parser.get("AppSettings", "openai_api_key") != "your_openai_api_key_here":
         openai.api_key = parser.get("AppSettings", "openai_api_key")
@@ -49,7 +56,8 @@ def hash_video_file(filename: str) -> str:
     :return: Returns hex based md5 hash
     """
     hash_md5 = hashlib.md5()
-    with open(f"{get_vid_save_path()}{filename}", "rb") as f:
+    video_file_path = Path(get_vid_save_path(), f'{filename}').resolve()
+    with video_file_path.open('rb') as f:
         for chunk in iter(lambda: f.read(4096), b""):
             hash_md5.update(chunk)
     return hash_md5.hexdigest()
@@ -77,25 +85,43 @@ def format_timestamp(seconds: int) -> str:
     return f'{str(minutes).zfill(2)}:{str(remaining_seconds).zfill(2)}'
 
 
-def read_user_data() -> json:
+def read_user_data() -> Optional[Any]:
     """
     Reads the users data from json file
     :return: Returns user data as json
     """
-    if not os.path.exists("data\\userdata.json"):
-        if not os.path.exists("data\\"):
-            os.makedirs("data\\")
-        with open("data\\userdata.json", "w") as user_data:
+    user_data_path = APP_DIR / 'data' / 'userdata.json'
+    if not user_data_path.exists():
+        data_dir = APP_DIR / 'data'
+        if not data_dir.exists():
+            data_dir.mkdir(parents=True, exist_ok=True)  # data directory
+        with user_data_path.open('w') as user_data:
             user_data.write(json.dumps({"all_videos": []}))
-            pass
         return None
     try:
-        with open("data\\userdata.json", "r") as user_data_json:
+        with user_data_path.open('r') as user_data_json:
             data = json.load(user_data_json)
             return data
     except JSONDecodeError:
         logging.error("Failed to read data from userdata.json, file may be empty.")
         return None
+
+
+def directory_append_slash(directory: str) -> str:
+    """
+    Append a trailing slash to a directory path if it doesn't already have one.
+    :param directory: The directory path to which a trailing slash will be appended, if missing.
+    :return: The directory path with a trailing slash appended, if necessary.
+    """
+    
+    # Check if directory already have trailing slash
+    if directory.endswith(('/', '\\')):
+        return directory
+    
+    # Append trailing slash
+    directory += '\\' if  os.name == 'nt' else '/'
+    
+    return directory
 
 
 def get_vid_save_path() -> str:
@@ -104,18 +130,19 @@ def get_vid_save_path() -> str:
     :return: file path as string
     """
     vid_download_path = config("UserSettings", "video_save_path")
+    
     # Set default output path for video download path
     if vid_download_path == "output_path":
-        default_path = os.path.dirname(os.getcwd()) + "\\out\\videos\\"
-        if not os.path.exists(default_path):
-            os.makedirs(default_path)
-        return default_path
-    # Check if the path ends with a backslash
-    if not vid_download_path.endswith("\\"):
-        # If it doesn't end with a backslash, append one
-        vid_download_path += "\\"
+        default_path = PROJ_ROOT / 'out' / 'videos'
+        if not default_path.exists():
+            default_path.mkdir(parents=True, exist_ok=True)
+        
+        default_path = str(default_path)
+        return directory_append_slash(default_path)
 
-    return vid_download_path
+    vid_download_path = str(Path(vid_download_path))
+    
+    return directory_append_slash(vid_download_path)
 
 
 def get_output_path() -> str:
@@ -125,16 +152,18 @@ def get_output_path() -> str:
     """
     output_path = config("UserSettings", "capture_output_path")
     # Set default output path for code files
+    
     if output_path == "output_path":
-        default_path = os.path.dirname(os.getcwd()) + "\\out\\"
-        if not os.path.exists(default_path):
-            os.makedirs(default_path)
-        return default_path
-    # Check if the path ends with a backslash
-    if not output_path.endswith("\\"):
-        # If it doesn't end with a backslash, append one
-        output_path += "\\"
-    return output_path
+        default_path = PROJ_ROOT / 'out'
+        if not default_path.exists():
+            default_path.mkdir(parents=True, exist_ok=True)
+        
+        default_path = str(default_path)
+        
+        return directory_append_slash(default_path)
+    
+    output_path = str(Path(output_path))
+    return directory_append_slash(output_path)
 
 
 def send_code_snippet_to_ide(filename: str, code_snippet: str) -> bool:
@@ -266,7 +295,8 @@ def update_user_video_data(filename: str, progress: Optional[float] = None, capt
                 record["progress"] = round(progress)
             if capture is not None:
                 record["captures"].append(capture)
-    with open("data/userdata.json", "w") as json_data:
+
+    with (APP_DIR / 'data' / 'userdata.json').open('w') as json_data:
         json.dump(user_data, json_data, indent=4)
 
 
@@ -281,7 +311,9 @@ def add_video_to_user_data(filename: str, video_title: str, video_hash: str, you
     user_data = read_user_data()
     if user_data is None:
         return
-    video_capture = cv2.VideoCapture(f'{get_vid_save_path()}{filename}')
+    
+    video_path = str(Path(get_vid_save_path(), f'{filename}').resolve())
+    video_capture = cv2.VideoCapture(video_path)
     if not video_capture.isOpened():
         logging.error(f"Failed to open video capture for {filename}")
         return
@@ -294,9 +326,13 @@ def add_video_to_user_data(filename: str, video_title: str, video_hash: str, you
         return
     thumbnail = str(int(time.time())) + ".png"
     # Check if img dir exists if not create
-    if not os.path.exists("static/img"):
-        os.makedirs("static/img")
-    cv2.imwrite(f"static/img/{thumbnail}", frame)
+    
+    static_dir = APP_DIR / 'static'
+    img_dir = static_dir / 'img'
+    if not img_dir.exists():
+        img_dir.mkdir(parents=True, exist_ok=True)
+    
+    cv2.imwrite(str(img_dir / f'{thumbnail}'), frame)
     new_video = {
         "video_hash": video_hash,
         "filename": filename,
@@ -310,7 +346,7 @@ def add_video_to_user_data(filename: str, video_title: str, video_hash: str, you
         new_video["youtube_url"] = youtube_url
     video_capture.release()
     user_data["all_videos"].append(new_video)
-    with open("data/userdata.json", "w") as json_data:
+    with (APP_DIR / 'data' / 'userdata.json').open('w') as json_data:
         json.dump(user_data, json_data, indent=4)
 
 
@@ -329,7 +365,7 @@ def file_already_exists(video_hash: str) -> bool:
     return False
 
 
-def get_setup_progress() -> [str]:
+def get_setup_progress() -> List[str]:
     """
     Gets users set up progress from config file
     :return: Returns array of string containing strings relating to settings that are already set up
@@ -347,7 +383,7 @@ def get_setup_progress() -> [str]:
     return setup_progress
 
 
-def parse_video_data() -> []:
+def parse_video_data() -> dict:
     """
     Gets all video data from userdata storage and parses all data for in progress videos
     :return: Array containing two arrays, 1 with all videos 1 with in progress videos
@@ -444,7 +480,8 @@ def delete_video_from_userdata(filename: str) -> None:
         if current_video["filename"] == filename:
             all_videos.remove(current_video)
             break
-    with open("data/userdata.json", "w") as json_data:
+    
+    with (APP_DIR / 'data' / 'userdata.json').open('w') as json_data:
         json.dump(user_data, json_data, indent=4)
 
 
@@ -464,8 +501,9 @@ def update_configuration(new_values_dict) -> None:
             if isinstance(value, bool) or isinstance(value, int):
                 value = str(value)
             config_file.set(section, key, value)
+    
     # save the file
-    with open('config.ini', 'w') as config_file_save:
+    with (APP_DIR / 'config.ini').open('w') as config_file_save:
         config_file.write(config_file_save)
 
 
