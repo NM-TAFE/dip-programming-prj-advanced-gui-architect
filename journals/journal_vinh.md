@@ -53,3 +53,18 @@ I set up an issue for native OS agnostic compatibility for Cert IV students. I r
 
 ### Retrospective
 By the end of the week, I will look upon more on any issues and features.
+
+### <11/06/2024>
+
+#### Evidence
+- [x] Attended class
+- [x] Responded to PRs/Issues
+- [ ] Met with the team online. Discord
+- [ ] Commits to group repo
+
+#### Summary
+What I'm working on is playing a sound when the capture is successful or not. I am using
+the playsound package based on the comment in the issue I looked at.
+
+### Retrospective
+By the end of the week, the notification sound when the capture is successful or not is implemented.
