@@ -37,7 +37,7 @@ I created a test script to extract formatted code, an explanation of the formatt
 - [x] Committed to group repo
 
 ### Other
-This week I implemented my experimental preprocess script into the OcrRoo program under the features/preprocessing-and-timestamps branch, as well as added multiple settings that change the behaviour of the preprocessing.
+This week I implemented my experimental preprocess script (credits to Low Kok Wei) into the OcrRoo program under the features/preprocessing-and-timestamps branch, as well as added multiple settings that change the behaviour of the preprocessing.
 Some of the features this introduced are the following:
 1. Preprocessing Videos
 2. Enable / Disable Preprocessing
