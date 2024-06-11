@@ -1,6 +1,9 @@
 # Code of Conduct
 
-## v1 - Drafted by Izaac Saleh & Sukhwan Ko
+## Versions
+
+- v2 - Drafted by Sukhwan Ko
+- <s>v1 - Drafted by Izaac Saleh & Sukhwan Ko</s>
 
 ## Our Pledge
 
@@ -55,22 +58,29 @@ any moderations they deem appropriate.
 
 ---
 
-- Our online platform (website, forum, chatroom etc.)
-- Code repository (including comments, pull requests, issue reports etc.)
-- Project-related communication channels such as:
-  - Email
-  - Slack
-  - Microsoft Teams
-  - Discord
-  - Asana
-  - etc.
-- In-person events(Conferences, meetups etc.)
+**Our online platform**
+
+- **Website**: The Code of Conduct applies to all comments, posts, and messages left on the website, including those in forums, discussion boards, or comment sections.
+- **Forum**: The same rules apply to all discussions, threads, and topics within the forum, including those that are public or private.
+- **Chatroom**: The Code of Conduct covers all conversations, messages, and files shared in chatroom, whether they're public or invited-only.
+
+**Code repository**
+
+- **Comments**: The Code applies to all comments left on code snippets, commits, or pull requests, as well as any replies or discussions that might arise.
+- **Pull requests:** The same rules apply to all pull requests, including those for new features, bug fixes, or refactoring code.
+- **Issue reports**: The Code of conduct covers all issue reports, whether they're related to bugs, feature requests, or documentation updates.
+
+**Project-related communication channels**
+
+- **Email**: The Code applies to all emails sent to the project's email list, including these that are public or private.
+- **Microsoft Teams:** The Code of Conduct covers all discussions, meetings, and file shared within the project's Microsoft Teams space.
+- **Discord(main):** The same rules apply to all voice or text chats, channels, and servers used by the project on Discord.
 
 ## Enforcement
 
 ---
 
-Community leaders will take action to address violations of the Code of Conduct. The specific consequences will depend on the severity of the violation.
+Our Community Leaders are responsible for clarifying and enforcing the standards of acceptable behaviour and are expected to lead by example. If a breach of the Code of Conduct is found to have occurred, Community Leaders are charged with taking appropriate but fair corrective action. Community Leaders have the responsibility, and maintain the right, to remove, edit, or reject comments, commits, code, issues, and other contributions that are not in alignment with this Code of Conduct. They will communicate the reasons for any moderation they deem appropriate.
 
 ## Enforcement Guidelines
 
@@ -99,6 +109,32 @@ Community leaders will take action to address violations of the Code of Conduct.
 - **Community Impact:** Demonstrating a pattern of violation of community standards, including sustained inappropriate behavior, harassment of an individual, or aggression toward or disparagement of classes of individuals.
 
 - **Consequence:** A permanent ban from any sort of public interaction within the community.
+
+5. Additional Guidelines
+
+- Initial Response: Upon receiving a report of potential Code of Conduct violation, our Community Leaders will acknowledge receipt and promptly investigate.
+  - Investigation Process:
+    - Gather information from all parties involved.
+    - Review relevant records and communications.
+    - Investigate in a fair and impartial manner.
+  - Communication During Investigation:
+    - Maintain open communication with all parties involved.
+    - Provide updates on the progress and outcome of the investigation.
+  - Decision-Making:
+    - Community Leaders will make decisions based on the findings and evidence gathered during the investigation.
+  - Consequences for Repeat Offenders:
+    - For repeat offenders, consequences may be escalated or combined (e.g., temporary ban and loss of privileges).
+  - Appeals Process:
+    - Establish a clear appeals process for individuals affected by enforcement decisions.
+    - Ensure that appeals are heard in a fair and impartial manner.
+
+6. Resolving Disputes
+
+- Dispute Resolution Committee: Establish a committee composed of community leaders to resolve disputes related to Code of Conduct violations.
+- Dispute Resolution Process:
+  - Identify the nature of the dispute.
+  - Gather information from all parties involved.
+  - Make a fair and impartial decision.
 
 ## Attribution
 

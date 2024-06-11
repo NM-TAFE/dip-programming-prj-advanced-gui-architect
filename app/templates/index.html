@@ -37,25 +37,31 @@
                 bg-gradient-to-tr from-indigo-500 via-fuchsia-400 to-purple-400"><i class="fa-solid fa-house mr-4"></i>OcrRoo Home</h2>
         {% endif %}
         {% if continue_watching %}
-            <section class="mb-4">
-                <div>
-                    <h2 class="text-2xl">Continue Watching</h2>
+        <section class="mb-4">
+            <div>
+                <h2 class="text-2xl mb-2">Continue Watching</h2>
+                    <div class="search-bar border-2 bg-gray-150 p-4 w-full text-lg flex ">
+                        <label class="m-4 pr-1 text-4xl" id="search-button">🔍</label>
+                        <input class="search-bar-input w-full p-2 pl-10 pr-10 border border-gray-200 rounded-sm" type="search" id="search-in" placeholder="Search...">
+                    </div>
                     <hr class="mb-4 mt-2">
-                    <div class="flex overflow-x-auto gap-4">
+                    <div class="flex flex-auto flex-wrap overflow-x-auto gap-4 justify-around">
                     {% for current_video in continue_watching %}
-                        <div class="w-1/6 shrink-0 mb-2 border-gray-600 border bg-white">
+                        <div class="continue-items w-1/4 shrink-0 mb-2 border-gray-600 border bg-white">
                             <a href="/play_video/{{ current_video["filename"] }}" >
                                 <img class="border-gray-600 border border-b-0 w-full h-40"
                                      src="{{url_for('static',filename='img/' + current_video["thumbnail"])}}"
                                      alt="{{ current_video["alias"] }} Thumbnail">
                             </a>
-                            <p style="width: {{ current_video["progress_percent"] }}%;" class="bg-gradient-to-tr from-indigo-500 via-fuchsia-400 to-purple-400 h-1 rounded-r-full">&nbsp</p>
-                            <span class="flex justify-between items-center p-1">
-                                <span>{{ current_video["alias"] }}</span>
-                                <span class="whitespace-nowrap text-gray-500 text-sm">
-                                    {{ current_video["progress"] }} / {{ current_video["video_length"] }}
-                                </span>
-                            </span>
+                            <div class="ml-1">
+                                <p style="width: {{ current_video["progress_percent"] }}%;" class="font-bold bg-gradient-to-tr from-indigo-500 via-fuchsia-400 to-purple-400 h-1 rounded-r-full">&nbsp</p>
+                                <p class="flex justify-between items-center p-1">
+                                    <p class="uploaded-filenames whitespace-wrap">{{ current_video["alias"] }}</p>
+                                    <p class=" text-gray-500 text-sm">
+                                        {{ current_video["progress"] }} / {{ current_video["video_length"] }}
+                                    </p>
+                                </p>
+                            </div>
                             <p class="text-gray-500 p-1 pt-0 text-sm">{{ current_video["captures"]|length }}
                                 code capture/s
                             </p>
@@ -78,13 +84,13 @@
                                      src="{{url_for('static',filename='img/' + current_video["thumbnail"])}}"
                                      alt="{{ current_video["alias"] }} Thumbnail">
                             </a>
-                            <span class="flex w-full justify-between items-center p-1">
-                                <span>{{ current_video["alias"] }}</span>
-                                <span class="text-gray-500 text-sm">{{ current_video["video_length"] }}</span>
-                            </span>
+                            <p class="flex w-full justify-between items-center p-1">
+                                <p>{{ current_video["alias"] }}</p>
+                                <p class="text-gray-500 text-sm">{{ current_video["video_length"] }}</p>
+                            </p>
                             <div class="flex w-full justify-between items-center px-1 pb-1">
-                                <span class="text-gray-500 w-fit text-sm">{{ current_video["captures"]|length }} code capture/s
-                                </span>
+                                <p class="text-gray-500 w-fit text-sm">{{ current_video["captures"]|length }} code capture/s
+                                </p>
                                 <button onclick="deleteVideo('{{ current_video["filename"] }}')"
                                         aria-label="delete video" class="text-red-400" type="button"><i class="fa-regular fa-trash-can"></i>
                                 </button>
