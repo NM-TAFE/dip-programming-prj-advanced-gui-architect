@@ -334,7 +334,6 @@ def add_video_to_user_data(filename: str, video_title: str, video_hash: str, you
     img_dir = static_dir / 'img'
     if not img_dir.exists():
         img_dir.mkdir(parents=True, exist_ok=True)
-    
     cv2.imwrite(str(img_dir / f'{thumbnail}'), frame)
     new_video = {
         "video_hash": video_hash,
