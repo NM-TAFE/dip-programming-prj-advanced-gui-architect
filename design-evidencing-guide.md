@@ -63,27 +63,39 @@ You will validate your design by meeting with a user representative: the product
 
 ##### Meeting minutes
 
-- [ ] Meeting held on [date]
-- [ ] Persona discussed: [persona name]
-- [ ] Design artefacts reviewed: [list of artifacts]
-- [ ] Issues discussed: [list of issues]
-- [ ] Feedback provided: [feedback]
+- [x] Meeting held on [date] 11/06/2024
+- [x] Persona discussed: [persona name] All of them
+- [x] Design artefacts reviewed: [list of artifacts]
+- [x] Issues discussed: [list of issues]
+- [x] Feedback provided: [feedback]
 
 ##### What worked well
 
 - [ ] [list of things that worked well]
+- different personas
+- exploring different models
+- watching youtube videos of blind users 
 
 ##### What could be improved
 
 - [ ] [list of things that could be improved]
+- validating interaction models (trying it ourselves)
+- start easy
+- more thoughts on designing
+- 
 
 ##### What will you change before the next meeting
 
 - [ ] [list of things that will be changed before the next meeting] (no commitment to complete this)
+- create a wireframe for getting to the nearest capture.
+- what if the next capture is 5 minutes away?
+- what if the file isn't fully processed yet?
+- examine how Ollama can be packed and shipped
 
 ##### Were there any questions that needed to be discussed with the user
 
 - [ ] [list of questions that need to be discussed with the user]
+- whether the user wants to start with the code, or with the video.
 
 #### Lecturer's checklist (to be used by the lecturer)
 
