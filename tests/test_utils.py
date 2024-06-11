@@ -119,25 +119,25 @@ def test_hash_string():
 def test_get_output_path(mocker):
     project_root = str(utils.PROJ_ROOT)
     default_path = utils.directory_append_slash(os.path.join(project_root, 'out'))
-    
+
     test_output_paths = {
         "output_path": default_path,
     }
-    
+
     assert os.name in ['nt', 'posix']
-    
+
     # Windows
     if os.name == 'nt':
         test_output_paths["c:\\users\\program files\\app"] = "c:\\users\\program files\\app\\"
         test_output_paths["videos\\my_videos\\"] = "videos\\my_videos\\"
-    
+
     # Linux or macOS (Note: GitHub Runner is using ubuntu)
     else:
         assert os.name == 'posix'
         users_dir = 'home' if 'home' in os.path.expanduser("~") else 'Users'
         test_output_paths[f"/{users_dir}/program_files/app"] = f"/{users_dir}/program_files/app/"
         test_output_paths["videos/my_videos/"] = "videos/my_videos/"
-    
+
     for paths in test_output_paths:
         mocker.patch("app.utils.config", return_value=paths)
         assert utils.get_output_path() == test_output_paths[paths]
@@ -156,3 +156,24 @@ def test_file_already_exists_false(mocker):
 def test_file_already_exists_no_user_data(mocker):
     mocker.patch("app.utils.read_user_data", return_value=None)
     assert not utils.file_already_exists("4aj3sdl5a4k2sjd091u091j")
+
+def test_audio_file_exists_in_audio_file_directory():
+    file_path = os.getcwd()
+    file_path += "//static/audio/"
+    edit_path = file_path.replace('tests', 'app')
+
+    audio_file = 'success.mp3'
+    file_path = os.path.join(edit_path, audio_file)
+
+    assert os.path.exists(file_path)
+
+
+def test_audio_file_does_not_exist_in_audio_file_directory():
+    file_path = os.getcwd()
+    file_path += "//static/audio/"
+    edit_path = file_path.replace('tests', 'app')
+
+    audio_file = 'non_existent_file.mp3'
+    file_path = os.path.join(edit_path, audio_file)
+
+    assert not os.path.exists(file_path)
