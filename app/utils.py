@@ -22,6 +22,7 @@ def playsound_notification(audio_file):
     :args: audio_file: Path to the audio_file in the app/static/audio folder
     """
     file_path = os.getcwd()
+    file_path += "//static/audio/"
     file_name = audio_file
     file_path = os.path.join(file_path, file_name)
     print(file_path)
