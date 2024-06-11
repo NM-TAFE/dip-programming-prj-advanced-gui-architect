@@ -1,3 +1,5 @@
+import os
+import sys
 import os.path
 import logging
 import shutil
@@ -8,6 +10,8 @@ from extract_text import ExtractText
 from flask import Flask, render_template, request, send_file, redirect
 import html
 import glob
+
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 # Initialise flask app
 app = Flask(__name__, static_url_path='/static', static_folder='static')
@@ -230,9 +234,9 @@ def update_settings():
 def reset_settings():
     print("Current working directory:", os.getcwd())
     # Delete the existing config.ini file
-    if os.path.exists('config.ini'):
-        os.remove('config.ini')
-    shutil.copy('config.example.ini', 'config.ini')
+    if os.path.exists('app/config.ini'):
+        os.remove('app/config.ini')
+    shutil.copy('app/config.example.ini', 'app/config.ini')
     current_settings = utils.get_current_settings()
     return render_template('settings.html', current_settings=current_settings)
 
@@ -275,9 +279,13 @@ def update_tesseract_path():
 if __name__ == "__main__":
     host = "localhost"
     port = 5000
+    if utils.update_port():
+        port = 5002
+    else:
+        port = port
     logging.basicConfig(filename="app.log", filemode="w", level=logging.DEBUG, format="%(levelname)s - %(message)s")
     print("[*] Starting OcrRoo Server")
     print(f"[*] OcrRoo Server running on http://{host}:{port}/")
-    app.run(host=host, port=port)
+    app.run(host=host, port=port, debug=True)
 else:
     logging.basicConfig(level=logging.DEBUG, format="%(levelname)s - %(message)s")

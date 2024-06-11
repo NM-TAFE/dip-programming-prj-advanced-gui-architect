@@ -1,6 +1,7 @@
+import sys
+import os.path
 import hashlib
 import json
-import os.path
 import shutil
 import subprocess
 import logging
@@ -13,6 +14,8 @@ import pytesseract
 from pytube import YouTube
 from pytube.exceptions import RegexMatchError
 from configparser import ConfigParser
+
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 
 def config(section: str = None, option: str = None) -> Union[ConfigParser, str]:
@@ -27,9 +30,9 @@ def config(section: str = None, option: str = None) -> Union[ConfigParser, str]:
     if (section is None) != (option is None):
         raise SyntaxError("section AND option parameters OR no parameters must be passed to function config()")
     parser = ConfigParser()
-    if not os.path.exists("config.ini"):
-        shutil.copy("config.example.ini", "config.ini")
-    parser.read("config.ini")
+    if not os.path.exists("app/config.ini"):
+        shutil.copy("app/config.example.ini", "app/config.ini")
+    parser.read("app/config.ini")
     if parser.get("AppSettings", "openai_api_key") != "your_openai_api_key_here":
         openai.api_key = parser.get("AppSettings", "openai_api_key")
         # TODO: This only needs to be set once, unsure if calling this will cause any performance issues same for
@@ -82,15 +85,15 @@ def read_user_data() -> json:
     Reads the users data from json file
     :return: Returns user data as json
     """
-    if not os.path.exists("data\\userdata.json"):
-        if not os.path.exists("data\\"):
-            os.makedirs("data\\")
-        with open("data\\userdata.json", "w") as user_data:
+    if not os.path.exists("app/data/userdata.json"):
+        if not os.path.exists("app/data/"):
+            os.makedirs("app/data/")
+        with open("app/data/userdata.json", "w") as user_data:
             user_data.write(json.dumps({"all_videos": []}))
             pass
         return None
     try:
-        with open("data\\userdata.json", "r") as user_data_json:
+        with open("app/data/userdata.json", "r") as user_data_json:
             data = json.load(user_data_json)
             return data
     except JSONDecodeError:
@@ -266,7 +269,7 @@ def update_user_video_data(filename: str, progress: Optional[float] = None, capt
                 record["progress"] = round(progress)
             if capture is not None:
                 record["captures"].append(capture)
-    with open("data/userdata.json", "w") as json_data:
+    with open("app/data/userdata.json", "w") as json_data:
         json.dump(user_data, json_data, indent=4)
 
 
@@ -294,9 +297,9 @@ def add_video_to_user_data(filename: str, video_title: str, video_hash: str, you
         return
     thumbnail = str(int(time.time())) + ".png"
     # Check if img dir exists if not create
-    if not os.path.exists("static/img"):
-        os.makedirs("static/img")
-    cv2.imwrite(f"static/img/{thumbnail}", frame)
+    if not os.path.exists("app/static/img"):
+        os.makedirs("app/static/img")
+    cv2.imwrite(f"app/static/img/{thumbnail}", frame)
     new_video = {
         "video_hash": video_hash,
         "filename": filename,
@@ -310,7 +313,7 @@ def add_video_to_user_data(filename: str, video_title: str, video_hash: str, you
         new_video["youtube_url"] = youtube_url
     video_capture.release()
     user_data["all_videos"].append(new_video)
-    with open("data/userdata.json", "w") as json_data:
+    with open("app/data/userdata.json", "w") as json_data:
         json.dump(user_data, json_data, indent=4)
 
 
@@ -444,7 +447,7 @@ def delete_video_from_userdata(filename: str) -> None:
         if current_video["filename"] == filename:
             all_videos.remove(current_video)
             break
-    with open("data/userdata.json", "w") as json_data:
+    with open("app/data/userdata.json", "w") as json_data:
         json.dump(user_data, json_data, indent=4)
 
 
@@ -465,7 +468,7 @@ def update_configuration(new_values_dict) -> None:
                 value = str(value)
             config_file.set(section, key, value)
     # save the file
-    with open('config.ini', 'w') as config_file_save:
+    with open('app/config.ini', 'w') as config_file_save:
         config_file.write(config_file_save)
 
 
@@ -530,3 +533,13 @@ def extract_form_values(request):
             'use_youtube_downloader': youtube_downloader_enabled,
         }
     }
+
+
+def update_port() -> bool:
+    """
+    Checks if the current platform is a Unix-based system (like Darwin or Linux). If so, returns True.
+    :return: bool - True if running on a Unix-based system, False otherwise
+    """
+    if sys.platform.lower() in ['darwin', 'linux']:
+        return True
+    return False
