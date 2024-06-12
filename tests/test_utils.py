@@ -65,14 +65,14 @@ def test_parse_video_data_empty_user_data(mocker):
 
 def test_delete_video_from_user_data(mocker):
     mocker.patch("app.utils.read_user_data", return_value=load_dummy_user_data())
-    mocker.patch("app.utils.open")
+    mocker.patch("app.utils.Path.open")
     utils.delete_video_from_userdata("loops.mp4")
     assert not utils.filename_exists_in_userdata("loops.mp4")
 
 
 def test_delete_video_from_user_data_video_not_exist(mocker):
     mocker.patch("app.utils.read_user_data", return_value=load_dummy_user_data())
-    mocker.patch("app.utils.open")
+    mocker.patch("app.utils.Path.open")
     utils.delete_video_from_userdata("ocr_training_video.mp4")
     assert not utils.filename_exists_in_userdata("ocr_training_video.mp4")
 
@@ -159,11 +159,8 @@ def test_file_already_exists_no_user_data(mocker):
 
 
 def test_audio_file_exists_in_audio_file_directory():
-    file_path = os.getcwd()
-    file_path += "//static/audio/"
-    edit_path = file_path.replace('tests', 'app')
-    audio_file = 'success.mp3'
-    file_path = os.path.join(edit_path, audio_file)
+    file_path = (utils.APP_DIR / 'static' / 'audio' / 'success.mp3').resolve()
+    file_path = str(file_path)
     assert os.path.exists(file_path)
 
 
