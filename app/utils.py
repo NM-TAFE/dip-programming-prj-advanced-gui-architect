@@ -8,16 +8,33 @@ import logging
 import time
 import cv2
 from json import JSONDecodeError
-from typing import Union, Optional, Any, List, Dict
+from typing import Union, Optional, Any, List
 import openai
 import pytesseract
 from pytube import YouTube
 from pytube.exceptions import RegexMatchError
 from configparser import ConfigParser
+from playsound import playsound
+
+
+def playsound_notification(audio_file):
+    """
+    Play a notification sound. Requires the playsound package to be installed.
+    :args: audio_file: Path to the audio_file in the app/static/audio folder
+    """
+    file_path = os.getcwd()
+    file_path += "//static/audio/"
+    file_name = audio_file
+    file_path = os.path.join(file_path, file_name)
+    print(file_path)
+    if audio_file is not None:
+        playsound(file_path)
+
 
 FILE_PATH = Path(__file__).resolve()  # Absolute Path of utils.py
 APP_DIR = FILE_PATH.parent
 PROJ_ROOT = APP_DIR.parent
+
 
 def config(section: str = None, option: str = None) -> Union[ConfigParser, str]:
     """
@@ -28,7 +45,6 @@ def config(section: str = None, option: str = None) -> Union[ConfigParser, str]:
     :param option: [Optional] Key/option of value to retrieve
     :return: Return string or ConfigParser object
     """
-    
     if (section is None) != (option is None):
         raise SyntaxError("section AND option parameters OR no parameters must be passed to function config()")
     parser = ConfigParser()
@@ -113,14 +129,11 @@ def directory_append_slash(directory: str) -> str:
     :param directory: The directory path to which a trailing slash will be appended, if missing.
     :return: The directory path with a trailing slash appended, if necessary.
     """
-    
     # Check if directory already have trailing slash
     if directory.endswith(('/', '\\')):
         return directory
-    
     # Append trailing slash
-    directory += '\\' if  os.name == 'nt' else '/'
-    
+    directory += '\\' if os.name == 'nt' else '/'
     return directory
 
 
@@ -130,18 +143,14 @@ def get_vid_save_path() -> str:
     :return: file path as string
     """
     vid_download_path = config("UserSettings", "video_save_path")
-    
     # Set default output path for video download path
     if vid_download_path == "output_path":
         default_path = PROJ_ROOT / 'out' / 'videos'
         if not default_path.exists():
             default_path.mkdir(parents=True, exist_ok=True)
-        
         default_path = str(default_path)
         return directory_append_slash(default_path)
-
     vid_download_path = str(Path(vid_download_path))
-    
     return directory_append_slash(vid_download_path)
 
 
@@ -152,16 +161,12 @@ def get_output_path() -> str:
     """
     output_path = config("UserSettings", "capture_output_path")
     # Set default output path for code files
-    
     if output_path == "output_path":
         default_path = PROJ_ROOT / 'out'
         if not default_path.exists():
             default_path.mkdir(parents=True, exist_ok=True)
-        
         default_path = str(default_path)
-        
         return directory_append_slash(default_path)
-    
     output_path = str(Path(output_path))
     return directory_append_slash(output_path)
 
@@ -311,7 +316,6 @@ def add_video_to_user_data(filename: str, video_title: str, video_hash: str, you
     user_data = read_user_data()
     if user_data is None:
         return
-    
     video_path = str(Path(get_vid_save_path(), f'{filename}').resolve())
     video_capture = cv2.VideoCapture(video_path)
     if not video_capture.isOpened():
@@ -326,12 +330,10 @@ def add_video_to_user_data(filename: str, video_title: str, video_hash: str, you
         return
     thumbnail = str(int(time.time())) + ".png"
     # Check if img dir exists if not create
-    
     static_dir = APP_DIR / 'static'
     img_dir = static_dir / 'img'
     if not img_dir.exists():
         img_dir.mkdir(parents=True, exist_ok=True)
-    
     cv2.imwrite(str(img_dir / f'{thumbnail}'), frame)
     new_video = {
         "video_hash": video_hash,
@@ -480,7 +482,6 @@ def delete_video_from_userdata(filename: str) -> None:
         if current_video["filename"] == filename:
             all_videos.remove(current_video)
             break
-    
     with (APP_DIR / 'data' / 'userdata.json').open('w') as json_data:
         json.dump(user_data, json_data, indent=4)
 
@@ -501,7 +502,6 @@ def update_configuration(new_values_dict) -> None:
             if isinstance(value, bool) or isinstance(value, int):
                 value = str(value)
             config_file.set(section, key, value)
-    
     # save the file
     with (APP_DIR / 'config.ini').open('w') as config_file_save:
         config_file.write(config_file_save)

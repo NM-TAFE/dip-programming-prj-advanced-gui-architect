@@ -26,12 +26,14 @@ class ExtractText:
         :param timestamp: Time stamp of the frame to extract
         :return: Formatted code as a string
         """
+        utils.playsound_notification("capture.mp3")
         frame = ExtractText.extract_frame_at_timestamp(filename, timestamp)
         if frame is not None:
             extracted_text = pytesseract.image_to_string(frame)
             logging.info(f"Successfully extracted code from frame @ {timestamp}s in file {filename}")
             return ExtractText.format_raw_ocr_string(extracted_text)
         else:
+            utils.playsound_notification("capture_fail_tone.wav")
             logging.error(f"Unable to extract code from frame @ {timestamp}s in file {filename}")
             return "ERROR"
 
@@ -50,6 +52,7 @@ class ExtractText:
             formatted_text = formatted_text.replace("```", "")
         if config("Formatting", "remove_language_name"):
             formatted_text = formatted_text.replace(language, "", 1)
+        utils.playsound_notification("success.mp3")
         return formatted_text
 
     @staticmethod
