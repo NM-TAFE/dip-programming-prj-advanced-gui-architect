@@ -137,8 +137,10 @@ def send_to_ide():
     code = request.get_json().get("code_snippet")
     unescaped_code = html.unescape(code)
     if utils.send_code_snippet_to_ide(filename, unescaped_code):
+        utils.playsound_notification("success.mp3")
         return "success"
     else:
+        utils.playsound_notification("error.mp3")
         return "fail"
 
 
