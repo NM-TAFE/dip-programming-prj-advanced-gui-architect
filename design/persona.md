@@ -1,47 +1,40 @@
 # Persona: [Alice]
 
 ## Background
-Alice is a blind computer science university student, learning to code. She carries a Macbook to school,
-but she uses Windows desktop at home.
+Alice is a determined computer science university student, learning to code despite facing the challenge of being visually impaired.
+She carries a Macbook to school, but she relies on her Windows desktop at home.
 
 ## Goals
-Alice wants to watch coding tutorials to learn how to code.
+Alice is eager to watch coding tutorials to enhance her programming skills.
 
 ## Needs
-"I have a Macbook and Windows desktop. Some programs do not support cross-platform.  
-I want to make sure that the program runs well on both devices."
+"I have a Macbook and Windows desktop. Unfortunately, some programs do not support cross-platform compatibility.  
+It's crucial for me that the program runs seamlessly on both devices, so I can learn without any limitations."
+
 
 # Persona: [Ben]
 
 ## Background
-Ben is a blind computer science university student. Ben is a full time student and also has a part time job.
+Ben is a hardworking computer science university student who balances his studies with a part time job.
+Despite his visual impairment, he is determined to broaden his programming knowledge.
 
 ## Goals
-Ben wants access to the whole extracted code from the video to save time.
+Ben aims to access comprehensive code examples from lengthy videos to optimise his learning experience.
 
 ## Needs
-"I want to see all the codes from a video at once, I don't have much time."  
-
-# Persona: [Ben]
-
-## Background
-Ben is a blind computer science university student. Ben is a full time student and also has a part time job.
-Ben wants to watch 6 hours long videos.
-
-## Goals
-Ben wants to watch 6 hours long videos to learn new programming languages.
-
-## Needs
-"I will not watch the whole 6 hours video but if there is code on screen, I want the access. 
-And when something is loading, I want to be able to know the status."  
+"I want to efficiently access all the code snippets from a video at once, as time is precious for me.
+While I may not be able to watch an entire 6 hours video, having access to the whole extracted code is invaluable.
+I also want to be informed of any loading status."
 
 # Persona: [Dan]
 
 ## Background
-Dan is a blind computer science university student. Dan recently lost his sight, and he is not used to relying on his listening skill.
+Dan is a resilient computer science university student who recently lost his sight due to an accident.
+Adjusting to life without vision, he is committed to continuing his coding education.
 
 ## Goals
-Dan uses this program to learn how to code.
+Dan uses this program to continue his journey of learning how to code.
 
 ## Needs
-"I often miss what the computer tells me, and I need to go back."
+"I often struggle to catch all the information conveyed by the computer due to my recent loss of sight.
+Having the ability to easily backtrack and review content is essential for me to grasp the concepts effectively."
