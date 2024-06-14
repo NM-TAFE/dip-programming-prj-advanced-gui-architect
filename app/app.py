@@ -225,7 +225,8 @@ def video(play_filename):
         global filename
         filename = play_filename
         current_settings = utils.get_current_settings()
-        return render_template("player.html", filename=filename, video_data=utils.get_video_data(filename), current_settings=current_settings)
+        preprocess_video = current_settings['UserSettings']['preprocess_videos'] == 'True'
+        return render_template("player.html", filename=filename, video_data=utils.get_video_data(filename), current_settings=current_settings, preprocess_video=preprocess_video)
     return redirect("/")
 
 

@@ -1,13 +1,44 @@
+let timestampsArr = null;
+
 function formatTimestamp(seconds) {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
     return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
 }
 
+function createCapture(title, text) {
+    let captureOutput = document.createElement("div");
+    captureOutput.classList.add("border", "border-gray-200", "mb-2", "p-2", "pt-0", "shadow-sm", "rounded-xl", "bg-white");
+    let captureTimestamp = document.createElement("span");
+    captureTimestamp.innerHTML = title;
+    let captureTitle = document.createElement("p");
+    captureTitle.classList.add("text-gray-400", "text-xs", "flex", "justify-between", "border-b", "border-gray-200", "py-1");
+    let captureBody = document.createElement("code");
+    captureBody.id = "code_" + nextCodeId++;
+    let copyThisCapture = document.createElement("button");
+    copyThisCapture.innerHTML = "Open in IDE";
+    copyThisCapture.classList.add("text-purple-600", "hover:cursor-pointer", "underline");
+    copyThisCapture.onclick = () =>  openInIde(captureBody.id);
+    captureTitle.appendChild(captureTimestamp);
+    captureTitle.appendChild(copyThisCapture);
+    captureOutput.appendChild(captureTitle);
+    let captureBodyWrap = document.createElement("pre");
+    captureBodyWrap.classList.add("overflow-x-auto");
+    captureBody.classList.add("w-full", "whitespace-pre", "language-python", "text-xs");
+    captureBody.contentEditable = "true";
+    let tempDiv = document.createElement("div");
+    tempDiv.innerHTML = text;
+    let decodedText = tempDiv.textContent;
+    captureBody.appendChild(document.createTextNode(decodedText));
+    captureBodyWrap.appendChild(captureBody);
+    captureOutput.appendChild(captureBodyWrap);
+    captureOutputContainer.appendChild(captureOutput);
+}
+
 document.addEventListener("DOMContentLoaded", function() {
-    var videoPlayer = document.getElementById("videoPlayer");
-    var progressBar = document.getElementById("progressBar");
-    var socket = io();
+    const videoPlayer = document.getElementById("videoPlayer");
+    const progressBar = document.getElementById("progressBar");
+    const socket = io();
 
     // Connect to local websocket
     socket.on('connect', function() {
@@ -26,20 +57,22 @@ document.addEventListener("DOMContentLoaded", function() {
     socket.on('timestampsUpdate', function(data) {
         const timestampsDiv = document.getElementById('timestamps');
         timestampsDiv.innerHTML = '';
+        timestampsArr = data;
+        captureOutputContainer.innerHTML = '';
         data.forEach(function(d) {
-            const { seconds, explanation } = d;
+            const { seconds, code, explanation } = d;
             const timestamp = formatTimestamp(seconds);
             const element = document.createElement('button');
             element.className = 'text-xl text-blue-400 p-2 rounded';
             element.textContent = timestamp;
+            timestampsDiv.appendChild(element);
+            createCapture("Detected @ Timestamp: " + timestamp, code);
             element.addEventListener('click', function() {
                 videoPlayer.currentTime = seconds;
                 progressBar.value = (seconds / videoPlayer.duration) * 100;
                 const currentTimestamp = document.getElementById('currentTimestamp');
                 currentTimestamp.innerHTML = formatTimestamp(seconds);
-                console.log(`Code explanation for ${timestamp}: ${explanation}`);
             });
-            timestampsDiv.appendChild(element);
         });
     });
 
@@ -56,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function() {
         processingText.textContent = "Your video has finished processing!";
         processingSubtext.textContent = "All timestamps detected to contain code are listed below.";
         if (full_code && typeof full_code === "string") {
-            console.log(full_code);
+            createCapture("Final Code", full_code);
         }
     });
 });
