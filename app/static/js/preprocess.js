@@ -6,6 +6,53 @@ function formatTimestamp(seconds) {
     return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
 }
 
+function setVideoPlayerTime(seconds) {
+    videoPlayer.currentTime = seconds;
+    progressBar.value = (seconds / videoPlayer.duration) * 100;
+    const currentTimestamp = document.getElementById('currentTimestamp');
+    currentTimestamp.innerHTML = formatTimestamp(seconds);
+}
+
+function previousTimestamp() {
+    const currentTime = videoPlayer.currentTime;
+    let closest = null;
+    let closestDiff = Infinity;
+
+    timestampsArr.forEach(ts => {
+        if (ts.seconds < currentTime) {
+            const difference = Math.abs(currentTime - ts.seconds);
+            if (difference < closestDiff) {
+                closestDiff = difference;
+                closest = ts;
+            }
+        }
+    });
+
+    if (closest) {
+        setVideoPlayerTime(closest.seconds);
+    }
+}
+
+function nextTimestamp() {
+    const currentTime = videoPlayer.currentTime;
+    let closest = null;
+    let closestDiff = Infinity;
+
+    timestampsArr.forEach(ts => {
+        if (ts.seconds > currentTime) {
+            const difference = Math.abs(currentTime - ts.seconds);
+            if (difference < closestDiff) {
+                closestDiff = difference;
+                closest = ts;
+            }
+        }
+    });
+
+    if (closest) {
+        setVideoPlayerTime(closest.seconds);
+    }
+}
+
 function createCapture(title, text) {
     let captureOutput = document.createElement("div");
     captureOutput.classList.add("border", "border-gray-200", "mb-2", "p-2", "pt-0", "shadow-sm", "rounded-xl", "bg-white");
@@ -66,12 +113,13 @@ document.addEventListener("DOMContentLoaded", function() {
             element.className = 'text-xl text-blue-400 p-2 rounded';
             element.textContent = timestamp;
             timestampsDiv.appendChild(element);
-            createCapture("Detected @ Timestamp: " + timestamp, code);
+
+            if (code) {
+                createCapture("Detected @ Timestamp: " + timestamp, code);
+            }
+
             element.addEventListener('click', function() {
-                videoPlayer.currentTime = seconds;
-                progressBar.value = (seconds / videoPlayer.duration) * 100;
-                const currentTimestamp = document.getElementById('currentTimestamp');
-                currentTimestamp.innerHTML = formatTimestamp(seconds);
+                setVideoPlayerTime(seconds);
             });
         });
     });
