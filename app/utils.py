@@ -504,6 +504,7 @@ def get_current_settings() -> dict:
         },
         'UserSettings': {
             'preprocess_videos': config_file.get('UserSettings', 'preprocess_videos'),
+            'preprocess_llm': config_file.get('UserSettings', 'preprocess_llm'),
             'preprocess_interval': config_file.get('UserSettings', 'preprocess_interval'),
             'preprocess_format_code': config_file.get('UserSettings', 'preprocess_format_code'),
             'preprocess_code_explanation': config_file.get('UserSettings', 'preprocess_code_explanation'),
@@ -531,6 +532,7 @@ def extract_form_values(request):
     if new_llama_endpoint == '':
         new_llama_endpoint = 'your_llama_endpoint_here'
     preprocess_videos = request.form.get('preprocess_videos') == 'True'
+    preprocess_llm = str(request.form.get('preprocess_llm'))
     preprocess_interval = str(request.form.get('preprocess_interval'))
     preprocess_format_code = request.form.get('preprocess_format_code') == 'True'
     preprocess_code_explanation = request.form.get('preprocess_code_explanation') == 'True'
@@ -559,6 +561,7 @@ def extract_form_values(request):
         },
         'UserSettings': {
             'preprocess_videos': preprocess_videos,
+            'preprocess_llm': preprocess_llm,
             'preprocess_interval': preprocess_interval,
             'preprocess_format_code': preprocess_format_code,
             'preprocess_code_explanation': preprocess_code_explanation,

@@ -1,5 +1,6 @@
+import logging
 import math
-
+import openai
 import requests
 import pytesseract
 import re
@@ -41,6 +42,28 @@ def query_llama(llama_endpoint, system_prompt, prompt, model="llama3", images=No
     print(req)
     body = req.json()
     return body['message']['content']
+
+
+def query_openai(irrelevant, system_prompt, prompt):
+    """
+    Query the OpenAI API
+    :param irrelevant: This parameter is irrelevant as it is the llama endpoint
+    :param system_prompt: The system prompt to provide to OpenAI
+    :param prompt: The prompt to provide to OpenAI
+    :return: The OpenAI response
+    """
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": prompt}
+            ]
+        )
+        return response['choices'][0]['message']['content']
+    except openai.OpenAIError as error:
+        logging.error(error)
+        return None
 
 
 def remove_unnecessary_chars(string):
@@ -115,7 +138,7 @@ def get_full_code(code_json):
     return "\n".join(unique_lines) + "\n"
 
 
-def scan_video_for_code_frames(filename, llama_endpoint, interval_seconds=5, programming_language="Python", provide_formatted_code=True, provide_code_explanations=True):
+def scan_video_for_code_frames(filename, llama_endpoint, interval_seconds=5, programming_language="Python", provide_formatted_code=True, provide_code_explanations=True, llm="llama"):
     """
     Scans a video for frames containing code at approximately every interval_seconds.
     :param filename: The files name
@@ -128,8 +151,9 @@ def scan_video_for_code_frames(filename, llama_endpoint, interval_seconds=5, pro
     """
     is_code_prompt = (
         f"You are a helpful coding assistant. Your task is to determine if the given text contains valid {programming_language} code. "
-        "If the text contains valid code, respond with true. Otherwise, respond with false. Do not include anything "
-        "other than true or false in your response."
+        "If the text contains valid code, respond with true. Do not worry if the code is not functional, "
+        "you just need to reply with true if it contains valid code. Otherwise, respond with false. Do not include "
+        "anything other than true or false in your response."
     )
 
     format_code_prompt = (
@@ -158,6 +182,7 @@ def scan_video_for_code_frames(filename, llama_endpoint, interval_seconds=5, pro
         f"failed to correct it."
     )
 
+    to_query = llm == "llama" and query_llama or query_openai
     video_path = f"{utils.get_vid_save_path()}\\{filename}"
     socketio = get_socketio()
     cap = cv2.VideoCapture(video_path)
@@ -177,14 +202,14 @@ def scan_video_for_code_frames(filename, llama_endpoint, interval_seconds=5, pro
             print(f"Processing frame {frame_count}")
             socketio.emit("processingProgressUpdate", f"{math.floor((frame_count / total_frames) * 100)}%")
             text = extract_text_from_frame(frame)
-            is_code = query_llama(llama_endpoint, is_code_prompt, text)
-            if is_code.strip().lower() == 'true':
+            is_code = to_query(llama_endpoint, is_code_prompt, text)
+            if is_code and is_code.strip().lower() == 'true':
                 formatted_code, code_explanation = None, None
                 timestamp = frame_count / fps
                 print(f"Code detected at timestamp: {timestamp}")
 
                 if provide_formatted_code:
-                    formatted_code = extract_code(query_llama(llama_endpoint, format_code_prompt, text))
+                    formatted_code = extract_code(to_query(llama_endpoint, format_code_prompt, text))
 
                     if not formatted_code:
                         print(f"Could not extract code from frame {frame_count}")
@@ -192,7 +217,7 @@ def scan_video_for_code_frames(filename, llama_endpoint, interval_seconds=5, pro
                         continue
 
                 if provide_code_explanations:
-                    code_explanation = query_llama(llama_endpoint, describe_code_prompt, text)
+                    code_explanation = to_query(llama_endpoint, describe_code_prompt, text)
                     print(f"Code from frame {frame_count} explanation: {code_explanation}")
 
                 code_frames.append({"seconds": timestamp, "code": formatted_code, "explanation": code_explanation})
@@ -202,11 +227,9 @@ def scan_video_for_code_frames(filename, llama_endpoint, interval_seconds=5, pro
 
     full_code = None
 
-    if provide_formatted_code:
-        formatted = query_llama(llama_endpoint, provide_full_code_prompt, get_full_code(code_frames))
-        print(formatted)
+    if len(code_frames) >= 1 and provide_formatted_code:
+        formatted = to_query(llama_endpoint, provide_full_code_prompt, get_full_code(code_frames))
         full_code = extract_code(formatted)
-        print(full_code)
 
     socketio.emit("finishedProcessing", full_code)
     cap.release()
