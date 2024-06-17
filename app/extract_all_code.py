@@ -6,6 +6,7 @@ import re
 import openai
 import time
 import ast
+import os
 
 # Set OpenAI API key
 openai.api_key = 'YOUR_API_KEY_HERE'
@@ -15,24 +16,23 @@ ocrroo_project_id = 'proj_QuVLGAnwfmfgut4JVVyDki97'
 
 # Specify project headers
 project_headers = {
-    "Authorization": "Bearer " + openai.api_key,
+    "Authorization" : "Bearer " + openai.api_key,
     # "OpenAI-Project" : ocrroo_project_id
 }
 
 
 # ChatGPT
-# python multiprocessing program to extract only programming code from video using opencv and tesseract ocr with
-# limited memory saving frames into text file
+# python multiprocessing program to extract only programming code from video using opencv and tesseract ocr with limited memory saving frames into text file
 
 # Set up pytesseract path (if required)
 # For example, on Windows:
 pytesseract.pytesseract.tesseract_cmd = r'C:\Users\user\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
 
 
-# Function to check if the text is likely to be programming code # using common keywords and symbols
+# Function to check if the text is likely to be programming code
 def is_code(text):
     code_pattern = re.compile(r"""
-        (\b(if|else|while|for|return|int|float|double|char|void|import|from|class|def|print|include|main)\b|
+        (\b(if|else|while|for|return|int|float|double|char|void|import|from|class|def|print|include|main)\b|  # common keywords
         [\{\}\[\]\(\)<>;:=]|  # common symbols
         \b\d+\b|  # numbers
         [\w]+\.\w+|  # object properties or functions
@@ -109,7 +109,6 @@ def extract_code_from_frame(frame):
     code_lines = [line.strip() for line in text.split('\n') if is_code(line)]
     return '\n'.join(code_lines)
 
-
 # Function to save frames containing code as images
 def save_frames(frames, output_dir, output_file):
     unique_code = set()
@@ -128,7 +127,6 @@ def save_frames(frames, output_dir, output_file):
         for code in unique_code:
             f.write(code + '\n')
 
-
 def is_valid_python_code(code_line):
     """
     Validate if a line of Python code is syntactically correct.
@@ -138,7 +136,6 @@ def is_valid_python_code(code_line):
         return True
     except SyntaxError:
         return False
-
 
 def process_code_file(input_filename, output_filename):
     """
@@ -162,6 +159,28 @@ def process_code_file(input_filename, output_filename):
             outfile.write(valid_line + '\n')
 
 
+def remove_duplicate_lines(input_file, output_file):
+    try:
+        with open(input_file, 'r') as file:
+            lines = file.readlines()
+
+        # Remove duplicate lines while preserving the order
+        seen = set()
+        unique_lines = []
+        for line in lines:
+            if line not in seen:
+                unique_lines.append(line)
+                seen.add(line)
+
+        # Write the unique lines to the output file
+        with open(output_file, 'w') as file:
+            file.writelines(unique_lines)
+
+    except FileNotFoundError:
+        print(f"The file {input_file} does not exist.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
 def process_text_file(input_file, output_file):
     with open(input_file, 'r') as file:
         text = file.read()
@@ -178,7 +197,7 @@ def process_text_file(input_file, output_file):
                     # {"role": "system",
                     #  "content": f"You are a coding assistant. You reply only in programming code "
                     #             "that is correct and formatted. Do NOT reply with any explanation, "
-                    #             "only code. If you are given something that is not programming code, "
+                    #             f"only code. If you are given something that is not programming code, "
                     #             "you must NOT include it in your response. If nothing is present, "
                     #             "simply return 'ERROR' and nothing else. Do NOT return leading or "
                     #             "trailing"
@@ -215,6 +234,7 @@ if __name__ == '__main__':
     output_dir = 'frames_with_code'
     raw_code_file = 'extracted_code.txt'
     valid_code_file = 'valid_code.txt'
+    clean_code_file = 'clean_code.txt'
     gpt_output_file = "gpt_output.txt"
 
     frames_with_code = process_video(video_path)
@@ -223,7 +243,8 @@ if __name__ == '__main__':
 
     process_code_file(raw_code_file, valid_code_file)
 
-    process_text_file(valid_code_file, gpt_output_file)
+    remove_duplicate_lines(valid_code_file, clean_code_file)
 
-    print(f"Code-containing frames extraction complete. Check '{output_dir}' for the output images. "
-          f"Check '{gpt_output_file}' for the output file.")
+    process_text_file(clean_code_file, gpt_output_file)
+
+    print(f"Code-containing frames extraction complete. Check '{output_dir}' for the output images. Check '{gpt_output_file}' for the output file.")
