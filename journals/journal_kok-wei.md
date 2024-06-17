@@ -13,3 +13,6 @@ Jun 10
 - Provided feedback to Rumsie on issue #20 with code guide as follow
 -   Set the static\audio path at utils.py as single point to change path when necessary.
 -   Fix the playsound error code 304 (invalide filename) by playing the mp3 sound files as wav didn't work.
+
+Jun 17
+- Created the video-to-code timestamp wireframe using figma
