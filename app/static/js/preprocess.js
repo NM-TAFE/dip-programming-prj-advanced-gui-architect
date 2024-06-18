@@ -92,7 +92,6 @@ function updateDisplayedCodeTimestamps(currentTime) {
 
         if ((seconds - 1) <= currentTime) {
             if (String(displayedTs?.seconds) !== String(seconds)) {
-                console.log(JSON.stringify(displayedTs), JSON.stringify(ts));
                 captureOutputContainer.innerHTML = '';
                 displayedTs = ts;
                 createCapture(`Detected @ Timestamp: ${formatTimestamp(seconds)}`, code);
