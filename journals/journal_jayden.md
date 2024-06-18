@@ -32,7 +32,7 @@ I created a test script to extract formatted code, an explanation of the formatt
 # Week 18
 ### Mark all that applied this week
 - [x] Attended class
-- [ ] Responded to PRs/Issues
+- [x] Responded to PRs/Issues
 - [x] Met with the team online. Discord
 - [x] Committed to group repo
 
@@ -45,3 +45,15 @@ Some of the features this introduced are the following:
 4. Setting to change the preprocessing interval
 5. Setting to change the llama endpoint (incase the user isn't locally hosting it, or is using a different port)
 6. Timestamps detected to contain working code that appear below the media player whilst the video is processing. Once clicked, the video will go to that timestamp (planning to make this a lot nicer, didn't get to do that just yet though)
+
+# Week 19
+### Mark all that applied this week
+- [x] Attended class
+- [x] Responded to PRs/Issues
+- [x] Met with the team online. Discord
+- [x] Committed to group repo
+
+### Other
+This week I merged my experimental preprocessing branch and added a setting for the user to be able to alternate between llama and openai depending on which one they would like to use. Some other notable changes are:
+1. If the user has preprocessing and formatted code enabled, the "Code Captures" section will turn into "Code Timestamps" and provide timestamps where code was detected, and the code detected at that timestamp.
+2. Added a next timestamp and previous timestamp button, which will skip you to the next or previous timestamp relative to your current position in the video. We would've liked to modify the code timestamps sections to only display the relevant code, however I didn't get to implementing that just yet :(
