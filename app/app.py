@@ -141,8 +141,10 @@ def send_to_ide():
     code = request.get_json().get("code_snippet")
     unescaped_code = html.unescape(code)
     if utils.send_code_snippet_to_ide(filename, unescaped_code):
+        utils.playsound_notification("success.mp3")
         return "success"
     else:
+        utils.playsound_notification("error.mp3")
         return "fail"
 
 
@@ -257,6 +259,7 @@ def update_settings():
 def reset_settings():
     print("Current working directory:", os.getcwd())
     # Delete the existing config.ini file
+    os.chdir(str(utils.APP_DIR))
     if os.path.exists('config.ini'):
         os.remove('config.ini')
     shutil.copy('config.example.ini', 'config.ini')
@@ -302,6 +305,8 @@ def update_tesseract_path():
 if __name__ == "__main__":
     host = "localhost"
     port = 5000
+    if os.name == 'posix':
+        port = 5001
     logging.basicConfig(filename="app.log", filemode="w", level=logging.DEBUG, format="%(levelname)s - %(message)s")
     print("[*] Starting OcrRoo Server")
     print(f"[*] OcrRoo Server running on http://{host}:{port}/")
