@@ -39,8 +39,8 @@ function nextTimestamp() {
     let closestDiff = Infinity;
 
     timestampsArr.forEach(ts => {
-        if (ts.seconds > currentTime) {
-            const difference = Math.abs(currentTime - ts.seconds);
+        if (Math.floor(ts.seconds) > Math.floor(currentTime)) {
+            const difference = Math.abs(Math.floor(currentTime) - Math.floor(ts.seconds));
             if (difference < closestDiff) {
                 closestDiff = difference;
                 closest = ts;

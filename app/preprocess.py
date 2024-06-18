@@ -115,17 +115,26 @@ def clean_code_text(text):
     return '\n'.join(cleaned_lines)
 
 
-def extract_code(text):
+def extract_code(text, language):
     """
     Since the AI responds with backticks, extract the text from between the backticks
     :param text: The AI response
+    :param language: The programming language the code is in
     :return: The extracted text or None
     """
-    match = re.search(r"```(.*?)```", text, re.DOTALL)
-    if match:
-        return match.group(1).strip()
-    else:
-        return None
+    to_return = None
+    language = language.lower()
+
+    if text != "ERROR":
+        if "```" in text:
+            match = re.search(r"```(.*?)```", text, re.DOTALL)
+            if match:
+                to_return = match.group(1).strip()
+        else:
+            to_return = text
+
+    # Detect if formatted code contains the language it was written in and remove it
+    return (to_return and language in to_return and to_return.replace(language, '')) or to_return
 
 
 def get_full_code(code_json):
@@ -203,13 +212,16 @@ def scan_video_for_code_frames(filename, llama_endpoint, interval_seconds=5, pro
             socketio.emit("processingProgressUpdate", f"{math.floor((frame_count / total_frames) * 100)}%")
             text = extract_text_from_frame(frame)
             is_code = to_query(llama_endpoint, is_code_prompt, text)
+            # print(is_code)
             if is_code and is_code.strip().lower() == 'true':
                 formatted_code, code_explanation = None, None
                 timestamp = frame_count / fps
                 print(f"Code detected at timestamp: {timestamp}")
 
                 if provide_formatted_code:
-                    formatted_code = extract_code(to_query(llama_endpoint, format_code_prompt, text))
+                    not_formatted = to_query(llama_endpoint, format_code_prompt, text)
+                    formatted_code = extract_code(not_formatted, programming_language)
+                    # print(not_formatted, formatted_code)
 
                     if not formatted_code:
                         print(f"Could not extract code from frame {frame_count}")
@@ -229,7 +241,7 @@ def scan_video_for_code_frames(filename, llama_endpoint, interval_seconds=5, pro
 
     if len(code_frames) >= 1 and provide_formatted_code:
         formatted = to_query(llama_endpoint, provide_full_code_prompt, get_full_code(code_frames))
-        full_code = extract_code(formatted)
+        full_code = extract_code(formatted, programming_language)
 
     socketio.emit("finishedProcessing", full_code)
     cap.release()
