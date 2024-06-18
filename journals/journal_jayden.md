@@ -32,7 +32,7 @@ I created a test script to extract formatted code, an explanation of the formatt
 # Week 18
 ### Mark all that applied this week
 - [x] Attended class
-- [ ] Responded to PRs/Issues
+- [x] Responded to PRs/Issues
 - [x] Met with the team online. Discord
 - [x] Committed to group repo
 
@@ -49,7 +49,7 @@ Some of the features this introduced are the following:
 # Week 19
 ### Mark all that applied this week
 - [x] Attended class
-- [ ] Responded to PRs/Issues
+- [x] Responded to PRs/Issues
 - [x] Met with the team online. Discord
 - [x] Committed to group repo
 
