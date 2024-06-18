@@ -239,9 +239,9 @@ def scan_video_for_code_frames(filename, llama_endpoint, interval_seconds=5, pro
 
     full_code = None
 
-    if len(code_frames) >= 1 and provide_formatted_code:
-        formatted = to_query(llama_endpoint, provide_full_code_prompt, get_full_code(code_frames))
-        full_code = extract_code(formatted, programming_language)
+    # if len(code_frames) >= 1 and provide_formatted_code:
+    #     formatted = to_query(llama_endpoint, provide_full_code_prompt, get_full_code(code_frames))
+    #     full_code = extract_code(formatted, programming_language)
 
     socketio.emit("finishedProcessing", full_code)
     cap.release()

@@ -1,4 +1,5 @@
 let timestampsArr = null;
+let displayedTs = null;
 
 function formatTimestamp(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -82,9 +83,31 @@ function createCapture(title, text) {
     captureOutputContainer.appendChild(captureOutput);
 }
 
+function updateDisplayedCodeTimestamps(currentTime) {
+    if (!timestampsArr || timestampsArr.length === 0) return;
+
+    for (let i = timestampsArr.length - 1; i >= 0; i--) {
+        const ts = timestampsArr[i];
+        const { seconds, code } = ts;
+
+        if ((seconds - 1) <= currentTime) {
+            if (String(displayedTs?.seconds) !== String(seconds)) {
+                console.log(JSON.stringify(displayedTs), JSON.stringify(ts));
+                captureOutputContainer.innerHTML = '';
+                displayedTs = ts;
+                createCapture(`Detected @ Timestamp: ${formatTimestamp(seconds)}`, code);
+            }
+
+            return;
+        }
+    }
+}
+
+videoPlayer.addEventListener("timeupdate", (event) => {
+    updateDisplayedCodeTimestamps(videoPlayer.currentTime);
+});
+
 document.addEventListener("DOMContentLoaded", function() {
-    const videoPlayer = document.getElementById("videoPlayer");
-    const progressBar = document.getElementById("progressBar");
     const socket = io();
 
     // Connect to local websocket
@@ -105,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const timestampsDiv = document.getElementById('timestamps');
         timestampsDiv.innerHTML = '';
         timestampsArr = data;
-        captureOutputContainer.innerHTML = '';
+        // captureOutputContainer.innerHTML = '';
         data.forEach(function(d) {
             const { seconds, code, explanation } = d;
             const timestamp = formatTimestamp(seconds);
@@ -114,12 +137,13 @@ document.addEventListener("DOMContentLoaded", function() {
             element.textContent = timestamp;
             timestampsDiv.appendChild(element);
 
-            if (code) {
-                createCapture("Detected @ Timestamp: " + timestamp, code);
-            }
+            // if (code) {
+            //     createCapture("Detected @ Timestamp: " + timestamp, code);
+            // }
 
             element.addEventListener('click', function() {
                 setVideoPlayerTime(seconds);
+                updateDisplayedCodeTimestamps(videoPlayer.currentTime);
             });
         });
     });
