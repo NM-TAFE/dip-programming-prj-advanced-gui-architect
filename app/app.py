@@ -1,16 +1,20 @@
 import os.path
 import logging
 import shutil
-from typing import Optional
 import utils
 import web_cli
-from extract_text import ExtractText
-from flask import Flask, render_template, request, send_file, redirect
 import html
 import glob
+from typing import Optional
+from extract_text import ExtractText
+from flask import Flask, render_template, request, send_file, redirect, jsonify
+from preprocess import scan_video_for_code_frames, get_full_code
+from socket_util import init_socketio
 
 # Initialise flask app
 app = Flask(__name__, static_url_path='/static', static_folder='static')
+# Initialise flask socket
+init_socketio(app)
 # Current video
 filename: Optional[str] = None
 # Flag to check if the search process should be canceled
@@ -192,6 +196,27 @@ def upload_video():
     return redirect("/upload")
 
 
+@app.route("/start_processing_video", methods=['POST'])
+def start_processing_video():
+    current_settings = utils.get_current_settings()
+    if filename and current_settings["UserSettings"]["preprocess_videos"] == 'True':
+        llama_endpoint = current_settings["AppSettings"]["llama_endpoint"]
+        preprocess_interval = int(current_settings["UserSettings"]["preprocess_interval"])
+        preprocess_format_code = current_settings["UserSettings"]["preprocess_format_code"] == 'True'
+        preprocess_code_explanation = current_settings["UserSettings"]["preprocess_code_explanation"] == 'True'
+        programming_language = current_settings["UserSettings"]["programming_language"]
+        preprocess_llm = current_settings["UserSettings"]["preprocess_llm"]
+        json = scan_video_for_code_frames(filename, llama_endpoint, preprocess_interval, programming_language, preprocess_format_code, preprocess_code_explanation, preprocess_llm)
+
+        output_file = f"{utils.get_processed_vid_info_save_path()}/{filename}.json"
+        with open(output_file, "w") as output:
+            output.write(json)
+
+        return "success"
+    else:
+        return "error"
+
+
 @app.route("/play_video/<play_filename>")
 def video(play_filename):
     """
@@ -202,7 +227,9 @@ def video(play_filename):
     if utils.filename_exists_in_userdata(play_filename):
         global filename
         filename = play_filename
-        return render_template("player.html", filename=filename, video_data=utils.get_video_data(filename))
+        current_settings = utils.get_current_settings()
+        preprocess_video = current_settings['UserSettings']['preprocess_videos'] == 'True'
+        return render_template("player.html", filename=filename, video_data=utils.get_video_data(filename), current_settings=current_settings, preprocess_video=preprocess_video)
     return redirect("/")
 
 

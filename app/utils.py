@@ -154,6 +154,26 @@ def get_vid_save_path() -> str:
     return directory_append_slash(vid_download_path)
 
 
+def get_processed_vid_info_save_path() -> str:
+    """
+    Returns output path from config variables, will set default to root of project\\out\\videos\\
+    :return: file path as string
+    """
+    processed_vid_download_path = config("UserSettings", "processed_video_save_path")
+    # Set default output path for video download path
+    if processed_vid_download_path == "output_path":
+        default_path = os.path.dirname(os.getcwd()) + "\\out\\processed\\"
+        if not os.path.exists(default_path):
+            os.makedirs(default_path)
+        return default_path
+    # Check if the path ends with a backslash
+    if not processed_vid_download_path.endswith("\\"):
+        # If it doesn't end with a backslash, append one
+        processed_vid_download_path += "\\"
+
+    return processed_vid_download_path
+
+
 def get_output_path() -> str:
     """
     Returns output path from config variables, will set default to root of project\\out
@@ -516,12 +536,19 @@ def get_current_settings() -> dict:
     current_settings = {
         'AppSettings': {
             'openai_api_key': config_file.get('AppSettings', 'openai_api_key'),
+            'llama_endpoint': config_file.get('AppSettings', 'llama_endpoint'),
             'ide_executable': config_file.get('AppSettings', 'ide_executable'),
             'tesseract_executable': config_file.get('AppSettings', 'tesseract_executable'),
         },
         'UserSettings': {
+            'preprocess_videos': config_file.get('UserSettings', 'preprocess_videos'),
+            'preprocess_llm': config_file.get('UserSettings', 'preprocess_llm'),
+            'preprocess_interval': config_file.get('UserSettings', 'preprocess_interval'),
+            'preprocess_format_code': config_file.get('UserSettings', 'preprocess_format_code'),
+            'preprocess_code_explanation': config_file.get('UserSettings', 'preprocess_code_explanation'),
             'programming_language': config_file.get('UserSettings', 'programming_language'),
             'output_path': config_file.get('UserSettings', 'capture_output_path'),
+            'processed_output_path': config_file.get('UserSettings', 'processed_video_save_path'),
             'mute_ui_sounds': config_file.get('UserSettings', 'mute_ui_sounds'),
             'username': config_file.get('UserSettings', 'username'),
         },
@@ -539,6 +566,14 @@ def extract_form_values(request):
     new_openai_api_key = str(request.form.get('openai_api_key'))
     if new_openai_api_key == '':
         new_openai_api_key = 'your_openai_api_key_here'
+    new_llama_endpoint = str(request.form.get('llama_endpoint'))
+    if new_llama_endpoint == '':
+        new_llama_endpoint = 'your_llama_endpoint_here'
+    preprocess_videos = request.form.get('preprocess_videos') == 'True'
+    preprocess_llm = str(request.form.get('preprocess_llm'))
+    preprocess_interval = str(request.form.get('preprocess_interval'))
+    preprocess_format_code = request.form.get('preprocess_format_code') == 'True'
+    preprocess_code_explanation = request.form.get('preprocess_code_explanation') == 'True'
     new_programming_language = str(request.form.get('programming_language'))
     ui_sound_enabled = request.form.get('mute_ui_sounds') == 'True'
     new_path_to_ide = str(request.form.get('ide_executable'))
@@ -550,17 +585,27 @@ def extract_form_values(request):
     new_output_path = str(request.form.get('output_path'))
     if new_output_path == '':
         new_output_path = 'output_path'
+    new_preprocess_output_path = str(request.form.get('output_path'))
+    if new_preprocess_output_path == '':
+        new_preprocess_output_path = 'output_path'
     youtube_downloader_enabled = request.form.get('use_youtube_downloader') == 'True'
 
     return {
         'AppSettings': {
             'openai_api_key': new_openai_api_key,
+            'llama_endpoint': new_llama_endpoint,
             'ide_executable': new_path_to_ide,
             'tesseract_executable': new_path_to_tesseract,
         },
         'UserSettings': {
+            'preprocess_videos': preprocess_videos,
+            'preprocess_llm': preprocess_llm,
+            'preprocess_interval': preprocess_interval,
+            'preprocess_format_code': preprocess_format_code,
+            'preprocess_code_explanation': preprocess_code_explanation,
             'programming_language': new_programming_language,
             'output_path': new_output_path,
+            'preprocess_output_path': new_preprocess_output_path,
             'mute_ui_sounds': ui_sound_enabled,
             'username': new_username,
         },
