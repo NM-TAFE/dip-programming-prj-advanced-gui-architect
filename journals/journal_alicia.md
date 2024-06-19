@@ -50,3 +50,31 @@ Mark all that applied this week
    - We need to come up with 5-6 issues for the Cert IV students.
    - Assigned to: The team 
 
+# Week 17
+
+### Evidence:
+Mark all that applied this week
+- [X] Attended class
+- [X] Responded to PRs/Issues
+- [ ] Met with the team online. Forum ______
+- [ ] Committed to group repo
+
+#### Progress:
+- Attempted to create Issues and PRs for all the work we were working on.
+
+# Week 19
+
+### Evidence:
+Mark all that applied this week
+- [X] Attended class
+- [X] Responded to PRs/Issues
+- [ ] Met with the team online. Forum ______
+- [ ] Committed to group repo
+
+#### Team Next Steps:
+- Amend the Personas based on feedback.
+- Create wireframes and adequately explain interaction patterns. 
+- Create issues and PRs for each of the features/fixes we are working on.
+
+
+
