@@ -54,7 +54,8 @@ function nextTimestamp() {
     }
 }
 
-function createCapture(title, text) {
+function createCapture(title, text, explanation) {
+    nextCodeId++
     let captureOutput = document.createElement("div");
     captureOutput.classList.add("border", "border-gray-200", "mb-2", "p-2", "pt-0", "shadow-sm", "rounded-xl", "bg-white");
     let captureTimestamp = document.createElement("span");
@@ -62,7 +63,7 @@ function createCapture(title, text) {
     let captureTitle = document.createElement("p");
     captureTitle.classList.add("text-gray-400", "text-xs", "flex", "justify-between", "border-b", "border-gray-200", "py-1");
     let captureBody = document.createElement("code");
-    captureBody.id = "code_" + nextCodeId++;
+    captureBody.id = "code_" + nextCodeId;
     let copyThisCapture = document.createElement("button");
     copyThisCapture.innerHTML = "Open in IDE";
     copyThisCapture.classList.add("text-purple-600", "hover:cursor-pointer", "underline");
@@ -77,9 +78,18 @@ function createCapture(title, text) {
     let tempDiv = document.createElement("div");
     tempDiv.innerHTML = text;
     let decodedText = tempDiv.textContent;
-    captureBody.appendChild(document.createTextNode(decodedText));
+    captureBody.appendChild(document.createTextNode(decodedText.trim()));
     captureBodyWrap.appendChild(captureBody);
     captureOutput.appendChild(captureBodyWrap);
+
+    if (explanation) {
+        let codeExplanationText = document.createElement("p");
+        codeExplanationText.classList.add("mt-2", "py-1", "text-gray-400", "text-xs", "border-t");
+        codeExplanationText.innerHTML = explanation;
+        codeExplanationText.id = "code_explanation_" + nextCodeId;
+        captureOutput.appendChild(codeExplanationText);
+    }
+
     captureOutputContainer.appendChild(captureOutput);
 }
 
@@ -88,13 +98,13 @@ function updateDisplayedCodeTimestamps(currentTime) {
 
     for (let i = timestampsArr.length - 1; i >= 0; i--) {
         const ts = timestampsArr[i];
-        const { seconds, code } = ts;
+        const { seconds, code, explanation } = ts;
 
         if ((seconds - 1) <= currentTime) {
             if (String(displayedTs?.seconds) !== String(seconds)) {
                 captureOutputContainer.innerHTML = '';
                 displayedTs = ts;
-                createCapture(`Detected @ Timestamp: ${formatTimestamp(seconds)}`, code);
+                createCapture(`Detected @ Timestamp: ${formatTimestamp(seconds)}`, code, explanation);
             }
 
             return;
