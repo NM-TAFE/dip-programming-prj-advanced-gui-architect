@@ -1,4 +1,3 @@
-let timestampsArr = null;
 let displayedTs = null;
 
 function formatTimestamp(seconds) {
@@ -117,60 +116,85 @@ videoPlayer.addEventListener("timeupdate", (event) => {
 });
 
 document.addEventListener("DOMContentLoaded", function() {
+    console.log(timestampsArr);
+    const timestampsDiv = document.getElementById('timestamps');
     const socket = io();
 
-    // Connect to local websocket
+     // Connect to local websocket
     socket.on('connect', function() {
+        console.log('Connected to socket!');
+    });
+
+    if (!timestampsArr) {
+        // Begin the preprocessing
         $.ajax('/start_processing_video', {
             method: 'POST'
         });
-    });
 
-    /* This message is sent everytime a frame is detected to contain code. It contains an array full of the following:
-    {
-        code: The formatted code (string | null)
-        explanation: An AI generated explanation of the formatted code (string | null)
-        seconds: How many seconds into the video the frame is (number)
-    }
-     */
-    socket.on('timestampsUpdate', function(data) {
-        const timestampsDiv = document.getElementById('timestamps');
-        timestampsDiv.innerHTML = '';
-        timestampsArr = data;
-        // captureOutputContainer.innerHTML = '';
-        data.forEach(function(d) {
-            const { seconds, code, explanation } = d;
+        /* This message is sent everytime a frame is detected to contain code. It contains an array full of the following:
+        {
+            code: The formatted code (string | null)
+            explanation: An AI generated explanation of the formatted code (string | null)
+            seconds: How many seconds into the video the frame is (number)
+        }
+         */
+        socket.on('timestampsUpdate', function(data) {
+            timestampsDiv.innerHTML = '';
+            timestampsArr = data;
+            // captureOutputContainer.innerHTML = '';
+            data.forEach(function(d) {
+                const { seconds, code, explanation } = d;
+                const timestamp = formatTimestamp(seconds);
+                const element = document.createElement('button');
+                element.className = 'text-xl text-blue-400 p-2 rounded';
+                element.textContent = timestamp;
+                timestampsDiv.appendChild(element);
+
+                // if (code) {
+                //     createCapture("Detected @ Timestamp: " + timestamp, code);
+                // }
+
+                element.addEventListener('click', function() {
+                    setVideoPlayerTime(seconds);
+                    updateDisplayedCodeTimestamps(videoPlayer.currentTime);
+                });
+            });
+        });
+
+        // This message is sent everytime a frame has finished being examined
+        socket.on('processingProgressUpdate', function(progress) {
+            const processingText = document.getElementById('processingText');
+            processingText.textContent = `Your video is currently processing... (${progress})`;
+        });
+
+        // Sent once the processing is complete
+        socket.on('finishedProcessing', function(full_code) {
+            const processingText = document.getElementById('processingText');
+            const processingSubtext = document.getElementById('processingSubtext');
+            processingText.textContent = "Your video has finished processing!";
+            processingSubtext.textContent = "All timestamps detected to contain code are listed below.";
+            if (full_code && typeof full_code === "string") {
+                createCapture("Final Code", full_code);
+            }
+        });
+    } else {
+        const processingText = document.getElementById('processingText');
+        const processingSubtext = document.getElementById('processingSubtext');
+        processingText.textContent = "Your video has already been preprocessed!";
+        processingSubtext.textContent = "All timestamps detected to contain code are listed below.";
+
+        timestampsArr.forEach(function(ts) {
+            const { seconds } = ts;
             const timestamp = formatTimestamp(seconds);
             const element = document.createElement('button');
             element.className = 'text-xl text-blue-400 p-2 rounded';
             element.textContent = timestamp;
             timestampsDiv.appendChild(element);
 
-            // if (code) {
-            //     createCapture("Detected @ Timestamp: " + timestamp, code);
-            // }
-
             element.addEventListener('click', function() {
                 setVideoPlayerTime(seconds);
                 updateDisplayedCodeTimestamps(videoPlayer.currentTime);
             });
         });
-    });
-
-    // This message is sent everytime a frame has finished being examined
-    socket.on('processingProgressUpdate', function(progress) {
-        const processingText = document.getElementById('processingText');
-        processingText.textContent = `Your video is currently processing... (${progress})`;
-    });
-
-    // Sent once the processing is complete
-    socket.on('finishedProcessing', function(full_code) {
-        const processingText = document.getElementById('processingText');
-        const processingSubtext = document.getElementById('processingSubtext');
-        processingText.textContent = "Your video has finished processing!";
-        processingSubtext.textContent = "All timestamps detected to contain code are listed below.";
-        if (full_code && typeof full_code === "string") {
-            createCapture("Final Code", full_code);
-        }
-    });
+    }
 });

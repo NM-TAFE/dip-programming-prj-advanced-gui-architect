@@ -287,6 +287,15 @@ def get_video_data(filename: str) -> []:
     return None
 
 
+def get_video_preprocessed_info(filename: str) -> []:
+    file_path = PROJ_ROOT / "out" / "processed" / f"{filename}.json"
+    if file_path.exists():
+        with open(file_path, "r") as file:
+            return json.load(file)
+    else:
+        return None
+
+
 def is_video_downloaded(filename: str) -> Optional[bool]:
     """
         Returns boolean if video is downloaded by checking user data storage

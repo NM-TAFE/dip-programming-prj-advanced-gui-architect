@@ -228,8 +228,17 @@ def video(play_filename):
         global filename
         filename = play_filename
         current_settings = utils.get_current_settings()
+
+        # video.mp4?fp = True
+        # Forces video to be preprocessed even if it has been preprocessed in the past
+        force_preprocess = request.args.get('fp', False, type=bool)
+        if force_preprocess:
+            video_preprocessed_json = None
+        else:
+            video_preprocessed_json = utils.get_video_preprocessed_info(filename)
+
         preprocess_video = current_settings['UserSettings']['preprocess_videos'] == 'True'
-        return render_template("player.html", filename=filename, video_data=utils.get_video_data(filename), current_settings=current_settings, preprocess_video=preprocess_video)
+        return render_template("player.html", filename=filename, video_data=utils.get_video_data(filename), current_settings=current_settings, video_preprocessed_json=video_preprocessed_json, preprocess_video=preprocess_video)
     return redirect("/")
 
 
