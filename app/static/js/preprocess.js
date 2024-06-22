@@ -19,7 +19,7 @@ function previousTimestamp() {
     let closestDiff = Infinity;
 
     timestampsArr.forEach(ts => {
-        if (Math.floor(ts.seconds) < Math.floor(currentTime)) {
+        if (Math.floor(ts.seconds + 2) < Math.floor(currentTime)) {
             const difference = Math.abs(Math.floor(currentTime) - Math.floor(ts.seconds));
             if (difference < closestDiff) {
                 closestDiff = difference;
@@ -149,10 +149,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 element.className = 'text-xl text-blue-400 p-2 rounded';
                 element.textContent = timestamp;
                 timestampsDiv.appendChild(element);
-
-                // if (code) {
-                //     createCapture("Detected @ Timestamp: " + timestamp, code);
-                // }
 
                 element.addEventListener('click', function() {
                     setVideoPlayerTime(seconds);
