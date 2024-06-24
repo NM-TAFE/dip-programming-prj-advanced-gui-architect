@@ -57,3 +57,13 @@ Some of the features this introduced are the following:
 This week I merged my experimental preprocessing branch and added a setting for the user to be able to alternate between llama and openai depending on which one they would like to use. Some other notable changes are:
 1. If the user has preprocessing and formatted code enabled, the "Code Captures" section will turn into "Code Timestamps" and provide timestamps where code was detected, and the code detected at that timestamp.
 2. Added a next timestamp and previous timestamp button, which will skip you to the next or previous timestamp relative to your current position in the video. We would've liked to modify the code timestamps sections to only display the relevant code, however I didn't get to implementing that just yet :(
+
+# Week 20
+### Mark all that applied this week
+- [] Attended class
+- [] Responded to PRs/Issues
+- [] Met with the team online. Discord
+- [x] Committed to group repo
+
+### Other
+Added an area for the code explanation under the formatted code text box. Also made it so that preprocessing saves and videos don't have to preprocess every time you open them. You can force a video to preprocess again by adding ?fp=1 to the end of the URL.
