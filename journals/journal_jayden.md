@@ -60,9 +60,9 @@ This week I merged my experimental preprocessing branch and added a setting for 
 
 # Week 20
 ### Mark all that applied this week
-- [] Attended class
-- [] Responded to PRs/Issues
-- [] Met with the team online. Discord
+- [ ] Attended class
+- [ ] Responded to PRs/Issues
+- [ ] Met with the team online. Discord
 - [x] Committed to group repo
 
 ### Other
